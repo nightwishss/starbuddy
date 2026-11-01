@@ -1,0 +1,69 @@
+#mic {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 16px;
+  background: #d9796c;
+  color: #fff;
+  font-size: 16px;
+}
+
+#mic.recording {
+  animation: pulse 1s ease-in-out infinite;
+  background: #b83d35;
+}
+
+.playback {
+  border: 0;
+  border-radius: 99px;
+  padding: 8px 14px;
+  background: #e3f4ed;
+  color: #397c68;
+  font: inherit;
+  font-size: 12px;
+}
+
+.voice-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.voice-controls button {
+  border: 1px solid #c9d8d1;
+  border-radius: 99px;
+  padding: 7px 12px;
+  background: #ffffffaa;
+  color: #397c68;
+  font: inherit;
+  font-size: 11px;
+}
+
+#board-mic {
+  background: #397c68;
+  color: white;
+  border-color: #397c68;
+}
+
+#observe, #monitor { border-color: #aeb9df; color: #525f9a; }
+#monitor[aria-pressed="true"] { background: #525f9a; color: white; }
+
+@keyframes pulse {
+  50% { transform: scale(.88); box-shadow: 0 0 0 8px #d9796c33; }
+}
+
+.face.speaking .mouth {
+  animation: talking .42s ease-in-out infinite alternate;
+}
+
+@keyframes talking {
+  from { height: 7%; transform: scaleX(.78); }
+  to { height: 17%; transform: scaleX(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #mic.recording, .face.speaking .mouth { animation: none; }
+}

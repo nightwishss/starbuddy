@@ -1,0 +1,19 @@
+[Unit]
+Description=VENTUNO Q HDMI StarBuddy WebKit kiosk
+After=vq-display.service vq-face-identity.service graphical-session.target
+Wants=vq-display.service vq-face-identity.service
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=GDK_BACKEND=wayland
+Environment=VQ_KIOSK_URI=http://127.0.0.1:8795/
+ExecStart=/usr/bin/systemd-inhibit --what=idle:sleep --mode=block --why=StarBuddy-display /usr/bin/python3 -m gateway.display.kiosk
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target

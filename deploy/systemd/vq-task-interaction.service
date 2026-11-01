@@ -1,0 +1,24 @@
+[Unit]
+Description=VENTUNO Q task event to embodied output adapter
+After=vq-events.service vq-output.service vq-display.service vq-task-orchestrator.service
+Wants=vq-events.service vq-output.service vq-display.service vq-task-orchestrator.service
+StartLimitIntervalSec=60
+StartLimitBurst=10
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 -m task_interaction_service.service
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/vq-platform /run/user/1000
+RestrictAddressFamilies=AF_UNIX AF_INET
+
+[Install]
+WantedBy=default.target

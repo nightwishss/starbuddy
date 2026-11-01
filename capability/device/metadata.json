@@ -1,0 +1,40 @@
+{
+  "capabilities": [
+    {
+      "name": "device.profile", "version": "1.0.0", "type": "query",
+      "description": "读取当前板卡硬件Profile和逻辑设备角色定义。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {"type": "object"},
+      "permissions": ["platform.device.read"], "timeout_ms": 1000,
+      "implementation": "capability.device.impl.get_profile", "status": "active",
+      "expose_to_agent": false
+    },
+    {
+      "name": "device.inventory", "version": "1.0.0", "type": "query",
+      "description": "发现Camera、Audio、Display和Matrix实体设备及稳定标识。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {"type": "object", "properties": {"devices": {"type": "array", "items": {"type": "object"}}, "count": {"type": "integer"}}, "required": ["devices", "count"]},
+      "permissions": ["platform.device.read"], "timeout_ms": 6000,
+      "implementation": "capability.device.impl.inventory", "status": "active",
+      "expose_to_agent": false
+    },
+    {
+      "name": "device.status", "version": "1.0.0", "type": "query",
+      "description": "解析所有逻辑硬件角色并报告必需设备健康状态。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {"type": "object", "properties": {"profile_id": {"type": "string"}, "healthy": {"type": "boolean"}, "required_failures": {"type": "array", "items": {"type": "string"}}, "roles": {"type": "object"}}, "required": ["profile_id", "healthy", "required_failures", "roles"]},
+      "permissions": ["platform.device.read"], "timeout_ms": 6000,
+      "implementation": "capability.device.impl.status", "status": "active",
+      "expose_to_agent": false
+    },
+    {
+      "name": "device.resolve", "version": "1.0.0", "type": "query",
+      "description": "把逻辑硬件角色解析为当前稳定实体设备。",
+      "input": {"type": "object", "properties": {"role": {"type": "string"}}, "required": ["role"], "additionalProperties": false},
+      "output": {"type": "object", "properties": {"role": {"type": "string"}, "kind": {"type": "string"}, "required": {"type": "boolean"}, "status": {"type": "string"}, "settings": {"type": "object"}, "device": {"type": "object"}, "match_count": {"type": "integer"}}, "required": ["role", "kind", "required", "status", "settings", "device", "match_count"]},
+      "permissions": ["platform.device.read"], "timeout_ms": 6000,
+      "implementation": "capability.device.impl.resolve", "status": "active",
+      "expose_to_agent": false
+    }
+  ]
+}

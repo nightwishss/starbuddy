@@ -1,0 +1,23 @@
+[Unit]
+Description=VENTUNO Q production-port CPU-detector/QNN-landmark pose service
+After=vq-camera-stream.service vq-pose-npu-worker.service
+Requires=vq-pose-npu-worker.service
+Wants=vq-camera-stream.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStartPre=%h/vq-platform/tools/wait_pose_npu_worker.sh
+ExecStart=%h/.local/share/vq-pose-lab/venv/bin/python -m pose_service.hybrid_service --host 127.0.0.1 --port 8791 --camera-url 'http://127.0.0.1:8781/live.mjpg?consumer=pose&fps=10' --rotation 180 --sample-fps 10
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=default.target

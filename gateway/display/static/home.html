@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>StarBuddy · 主页</title>
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/wave.css">
+</head>
+<body>
+<main class="home">
+  <header class="home-header">
+    <a class="brand" href="/" aria-label="星伴主页">星伴 <span>starbuddy</span></a>
+    <nav class="header-links" aria-label="首页快捷入口"><a class="settings" href="/interaction#camera-panel">摄像头与情境 ↗</a><a class="settings" href="/preferences">大人设置 <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <section class="home-controls" aria-label="互动与守护">
+    <section id="home-wave" class="control-card wave-panel" aria-label="挥手互动">
+      <div class="control-heading"><h2>挥手互动</h2><span id="wave-state" role="status">正在读取状态</span></div>
+      <p id="wave-info" role="status">只读取运行状态，不会自动开启摄像头或麦克风。</p>
+      <button id="wave-toggle" type="button" aria-pressed="false" disabled>正在连接</button>
+      <p id="wave-detail" class="control-detail">离开首页会自动关闭。</p>
+    </section>
+    <section class="control-card posture-panel" aria-label="坐姿守护">
+      <div class="control-heading"><h2>坐姿守护</h2><span id="home-posture-state" role="status">正在读取状态</span></div>
+      <p id="home-posture-info" role="status">正在核对后台守护，不会在主页自动启动检测。</p>
+      <a class="control-link" href="/posture">坐姿守护 / 校准</a>
+      <p class="control-detail">独立后台守护，可随时暂停。</p>
+    </section>
+  </section>
+  <section class="playground" aria-label="和星伴一起玩">
+    <div class="companion">
+      <button id="home-buddy" class="buddy" type="button" data-mood="curious" data-phase="idle" aria-label="碰碰星伴，让它笑一笑（不会开启录音）" aria-describedby="buddy-hint">
+        <span class="buddy-motion" aria-hidden="true">
+          <img class="expression curious" src="/home-buddy-curious.svg" width="480" height="420" alt="" draggable="false">
+          <img class="expression listening" src="/home-buddy-listening.svg" width="312" height="273" alt="" draggable="false">
+          <img class="expression amused" src="/home-buddy-amused.svg" width="312" height="273" alt="" draggable="false">
+        </span>
+      </button>
+      <p id="home-status" class="buddy-caption" role="status" aria-live="polite">嗯？你有个好主意？</p>
+      <p id="buddy-hint" class="buddy-hint">可以轻轻碰我一下</p>
+    </div>
+    <div class="activities">
+      <span class="home-eyebrow">今天，也一起慢慢来</span>
+      <h1>你好，我是芽芽。</h1>
+      <p class="intro">想说什么？我在这里听。</p>
+      <a class="talk-entry" href="/interaction"><span aria-hidden="true">◉</span><span>和芽芽说话<small>进入后，可开启持续对话</small></span><span aria-hidden="true">↗</span></a>
+      <nav class="objects" aria-label="星伴模式">
+        <a class="object" href="/story">
+          <span class="object-art"><img src="/home-story.svg" width="180" height="176" alt="" draggable="false"></span>
+          <span class="object-name">编故事</span><span class="object-note">一起决定下一步</span>
+        </a>
+        <a class="object" href="/masks">
+          <span class="object-art"><img src="/home-masks.svg" width="180" height="176" alt="" draggable="false"></span>
+          <span class="object-name">玩表情</span><span class="object-note">猜猜这张脸</span>
+        </a>
+        <a class="object" href="/quiet">
+          <span class="object-art"><img src="/home-pause.svg" width="180" height="176" alt="" draggable="false"></span>
+          <span class="object-name">休息一下</span><span class="object-note">安静地陪着你</span>
+        </a>
+      </nav>
+      <details class="more">
+        <summary>还有什么可以玩？ <span aria-hidden="true">＋</span></summary>
+        <nav aria-label="更多模式">
+          <a href="/journal">树洞与日记</a><a href="/hugs">远程拥抱</a><a href="http://127.0.0.1:8795/?mode=manage">身份管理</a>
+        </nav>
+      </details>
+    </div>
+  </section>
+  <footer class="home-footer">
+    <span>想聊天、玩一会儿，还是安静休息？</span>
+    <a href="/interaction">打开对话 <span aria-hidden="true">↗</span></a>
+  </footer>
+  <p class="privacy-note">主页默认不开录音或视觉模型；挥手互动需手动开启，离开页面即关闭。已预约的节目和后台守护仍按原设置运行。</p>
+</main>
+<script src="/home.js"></script>
+<script src="/wave.js"></script>
+</body>
+</html>

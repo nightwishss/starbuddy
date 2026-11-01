@@ -1,0 +1,81 @@
+{
+  "capabilities": [
+    {
+      "name": "speech.status",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "检查板端STT、TTS及音频转换运行文件是否就绪，不执行模型推理。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "ready": {"type": "boolean"},
+          "stt": {"type": "boolean"},
+          "tts": {"type": "boolean"}
+        },
+        "required": ["ready", "stt", "tts"]
+      },
+      "permissions": ["ai.speech.execute"],
+      "timeout_ms": 1000,
+      "expose_to_agent": false,
+      "status": "active"
+    },
+    {
+      "name": "speech.transcribe",
+      "version": "1.1.0",
+      "type": "query",
+      "description": "使用板端 Whisper 将已授权的临时录音转成文字。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "media_id": {"type": "string"},
+          "media_owner": {"type": "string", "pattern": "^[A-Za-z0-9_.:-]{1,256}$"}
+        },
+        "required": ["media_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {"text": {"type": "string"}},
+        "required": ["text"]
+      },
+      "permissions": ["ai.speech.execute"],
+      "timeout_ms": 30000,
+      "expose_to_agent": false,
+      "status": "active"
+    },
+    {
+      "name": "speech.synthesize",
+      "version": "1.2.0",
+      "type": "command",
+      "description": "使用当前配置的板端 TTS 合成临时 WAV；可选保音高慢速，不切换后端。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string"},
+          "speed": {"type": "number", "minimum": 0.6, "maximum": 1.0},
+          "media_owner": {"type": "string", "pattern": "^[A-Za-z0-9_.:-]{1,256}$"}
+        },
+        "required": ["text"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "audio_token": {"type": "string"},
+          "media_id": {"type": "string"},
+          "kind": {"type": "string"},
+          "mime_type": {"type": "string"},
+          "size": {"type": "integer"},
+          "created_at": {"type": "number"},
+          "expires_at": {"type": "number"}
+        },
+        "required": ["mime_type", "size"]
+      },
+      "permissions": ["ai.speech.execute"],
+      "timeout_ms": 30000,
+      "expose_to_agent": false,
+      "status": "active"
+    }
+  ]
+}

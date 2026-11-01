@@ -1,0 +1,170 @@
+{
+  "capabilities": [
+    {
+      "name": "perception.observe",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "从逻辑摄像头采集临时帧，在板端QNN运行物体检测，并只返回结构化观察和变化事件。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "role": {"type": "string", "enum": ["camera.front", "camera.environment"]},
+          "profile": {"type": "string", "enum": ["fast", "balanced", "detail"]},
+          "confidence": {"type": "number", "minimum": 0.3, "maximum": 1.0},
+          "stability_samples": {"type": "integer", "minimum": 1, "maximum": 3}
+        },
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "observation_id": {"type": "string"},
+          "observed_at": {"type": "number"},
+          "role": {"type": "string"},
+          "profile": {"type": "string"},
+          "frame": {"type": "object"},
+          "summary": {"type": "object"},
+          "stable_summary": {"type": "object"},
+          "change": {"type": "object"},
+          "detections": {"type": "array", "items": {"type": "object"}},
+          "model": {"type": "string"},
+          "backend": {"type": "string"},
+          "timing": {"type": "object"}
+        },
+        "required": ["observation_id", "observed_at", "role", "profile", "frame", "summary", "stable_summary", "change", "detections", "model", "backend", "timing"]
+      },
+      "permissions": ["device.camera.capture", "ai.vision.execute"],
+      "timeout_ms": 30000,
+      "expose_to_agent": false,
+      "status": "active"
+    },
+    {
+      "name": "perception.context.snapshot",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "读取统一、临时、带来源与TTL的本地语义感知快照；不包含原始图像、音频、关键点或embedding。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "revision": {"type": "integer"}, "generated_at": {"type": "number"},
+          "people": {"type": "array", "items": {"type": "object"}},
+          "identities": {"type": "array", "items": {"type": "object"}},
+          "objects": {"type": "array", "items": {"type": "object"}},
+          "posture": {},
+          "affect_cues": {"type": "array", "items": {"type": "object"}},
+          "observations": {"type": "array", "items": {"type": "object"}},
+          "fresh": {"type": "boolean"}, "privacy": {"type": "object"}
+        },
+        "required": ["revision", "generated_at", "people", "identities", "objects", "posture", "affect_cues", "observations", "fresh", "privacy"]
+      },
+      "permissions": ["ai.vision.execute"], "timeout_ms": 3000,
+      "expose_to_agent": true, "status": "active"
+    },
+    {
+      "name": "perception.posture.status",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "读取板端姿态守护的语义状态，不返回图像或人体关键点。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "enabled": {"type": "boolean"}, "state": {"type": "string"},
+          "calibrated": {"type": "boolean"}, "progress": {"type": "number"},
+          "reasons": {"type": "array", "items": {"type": "string"}},
+          "message": {"type": "string"}, "updated_at": {"type": "number"}
+        },
+        "required": ["enabled", "state", "calibrated", "progress", "reasons", "message", "updated_at"]
+      },
+      "permissions": ["ai.vision.execute"], "timeout_ms": 3000,
+      "expose_to_agent": true, "status": "active"
+    },
+    {
+      "name": "perception.posture.start", "version": "1.0.0", "type": "command",
+      "description": "由可信应用显式开启后台姿态守护。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {"type": "object", "properties": {"enabled": {"type": "boolean"}, "state": {"type": "string"}}, "required": ["enabled", "state"]},
+      "permissions": ["ai.vision.execute"], "timeout_ms": 3000,
+      "expose_to_agent": false, "status": "active"
+    },
+    {
+      "name": "perception.posture.pause", "version": "1.0.0", "type": "command",
+      "description": "由可信应用暂停后台姿态守护，不删除个人校准基线。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {"type": "object", "properties": {"enabled": {"type": "boolean"}, "state": {"type": "string"}}, "required": ["enabled", "state"]},
+      "permissions": ["ai.vision.execute"], "timeout_ms": 3000,
+      "expose_to_agent": false, "status": "active"
+    },
+    {
+      "name": "perception.posture.monitor", "version": "1.0.0", "type": "command",
+      "description": "启动一个有期限、单所有者的坐姿守护租约；持续判断、冷却和提醒由姿态策略执行。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "task_id": {"type": "string", "pattern": "^task_[0-9a-f]{32}$"},
+          "duration_seconds": {"type": "integer", "minimum": 60, "maximum": 14400},
+          "bad_duration_seconds": {"type": "integer", "minimum": 5, "maximum": 120},
+          "cooldown_seconds": {"type": "integer", "minimum": 30, "maximum": 1800}
+        },
+        "required": ["task_id", "duration_seconds", "bad_duration_seconds", "cooldown_seconds"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "accepted": {"type": "boolean"}, "enabled": {"type": "boolean"},
+          "state": {"type": "string"}, "monitor_mode": {"type": "string"},
+          "monitor_session": {"type": "object"}
+        },
+        "required": ["accepted", "enabled", "state", "monitor_mode", "monitor_session"]
+      },
+      "permissions": ["ai.vision.execute"], "timeout_ms": 30000,
+      "expose_to_agent": false, "status": "active"
+    },
+    {
+      "name": "perception.posture.stop", "version": "1.0.0", "type": "command",
+      "description": "仅停止指定 task_id 所持有的坐姿守护租约，不影响其他任务或手动模式。",
+      "input": {
+        "type": "object",
+        "properties": {"task_id": {"type": "string", "pattern": "^task_[0-9a-f]{32}$"}},
+        "required": ["task_id"], "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "stopped": {"type": "boolean"}, "enabled": {"type": "boolean"},
+          "state": {"type": "string"}, "monitor_mode": {"type": "string"},
+          "monitor_session": {"type": "null"}
+        },
+        "required": ["stopped", "enabled", "state", "monitor_mode", "monitor_session"]
+      },
+      "permissions": ["ai.vision.execute"], "timeout_ms": 3000,
+      "expose_to_agent": false, "status": "active"
+    },
+    {
+      "name": "perception.posture.calibrate", "version": "1.0.0", "type": "command",
+      "description": "由可信应用在用户明确操作后采集个人健康坐姿基线。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {"type": "object", "properties": {"enabled": {"type": "boolean"}, "state": {"type": "string"}, "accepted": {"type": "boolean"}}, "required": ["enabled", "state", "accepted"]},
+      "permissions": ["ai.vision.execute"], "timeout_ms": 3000,
+      "expose_to_agent": false, "status": "active"
+    },
+    {
+      "name": "perception.posture.reset", "version": "1.0.0", "type": "command",
+      "description": "由可信应用删除个人姿态基线并重置判断状态。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {"type": "object", "properties": {"enabled": {"type": "boolean"}, "state": {"type": "string"}}, "required": ["enabled", "state"]},
+      "permissions": ["ai.vision.execute"], "timeout_ms": 3000,
+      "expose_to_agent": false, "status": "active"
+    },
+    {
+      "name": "perception.posture.simulate", "version": "1.0.0", "type": "command",
+      "description": "仅供可信测试应用执行可见的姿态提醒模拟，不代表真实判断。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {"type": "object", "properties": {"enabled": {"type": "boolean"}, "state": {"type": "string"}, "accepted": {"type": "boolean"}}, "required": ["enabled", "state", "accepted"]},
+      "permissions": ["ai.vision.execute"], "timeout_ms": 3000,
+      "expose_to_agent": false, "status": "active"
+    }
+  ]
+}

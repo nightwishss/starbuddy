@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>StarBuddy · 我的节奏</title><link rel="stylesheet" href="/preferences.css"><link rel="stylesheet" href="/theme.css"></head><body class="theme-page theme-preferences"><main>
+<header><a class="brand" href="/">星伴 <span>starbuddy</span></a><a class="back" href="/">退出 · 回主页</a></header>
+<section class="intro"><p class="eyebrow">由你告诉我，不靠猜测</p><h1>找到舒服的节奏</h1><p>这是这台板子共用的设置，不按人脸切换。换人使用时，可以一键恢复默认。</p></section>
+<div class="layout"><form id="preferences-form"><fieldset id="controls" disabled><legend>你希望我怎样回应？</legend>
+<label for="speed">说话速度</label><select id="speed"><option value="1">正常 · 1.0×</option><option value="0.8">慢一点 · 0.8×</option><option value="0.6">更慢 · 0.6×</option></select>
+<label for="reply-length">聊天回答</label><select id="reply-length"><option value="standard">正常说明</option><option value="brief">简短些 · 优先一两句</option></select>
+<label class="consent"><input id="remember" type="checkbox">同意只在本机记住这两个选项，最多 7 天</label>
+<p class="hint">不勾选：临时使用 30 分钟，重启即忘记。到期恢复默认；不保存对话、声音、表情或身份。</p>
+<div class="actions"><button id="apply" type="submit">应用我的选择</button><button id="reset" type="button">恢复默认并忘记</button></div>
+</fieldset></form>
+<aside><p class="eyebrow">实际生效状态</p><h2 id="effective">正在读取…</h2><p id="retention"></p><p id="change"></p><p id="notice" role="status" aria-live="polite">没有自动播放或模型调用。</p><button id="refresh" type="button">刷新状态</button>
+<a class="try" href="/companion">去聊天试试 →</a></aside></div>
+<section class="scope"><h2>会改变什么？</h2><p>语速用于屏幕聊天、故事、面具及主动视觉反馈的下一次语音提交；正在播放或排队的声音不会中途变速。简短选项用于普通聊天，不裁短完整故事、任务确认或安全固定回应。</p><p>晚安/电台仍使用各自的语速；定时提醒、远程拥抱、手机端不变。慢速是播放节奏，不会让模型合成更快。没有自动情绪学习、在线训练或后台分析。</p></section>
+</main><script src="/preferences.js"></script></body></html>

@@ -1,0 +1,121 @@
+{
+  "capabilities": [
+    {
+      "name": "file.read",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "读取文本文件内容 (路径限制在用户主目录内, 阻止路径穿越)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"}
+        },
+        "required": ["path"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"},
+          "content": {"type": "string"},
+          "bytes": {"type": "integer"}
+        },
+        "required": ["path", "content", "bytes"]
+      },
+      "permissions": ["service.file.read"],
+      "timeout_ms": 2000,
+      "implementation": "capability.file.impl.read",
+      "status": "active"
+    },
+    {
+      "name": "file.write",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "写文本文件 (自动建父目录; 路径限制在用户主目录内)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"},
+          "content": {"type": "string"}
+        },
+        "required": ["path", "content"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"},
+          "bytes": {"type": "integer"}
+        },
+        "required": ["path", "bytes"]
+      },
+      "permissions": ["service.file.write"],
+      "timeout_ms": 2000,
+      "implementation": "capability.file.impl.write",
+      "status": "active"
+    },
+    {
+      "name": "file.list",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "列目录 (返回条目名/类型/大小)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"}
+        },
+        "required": ["path"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"},
+          "count": {"type": "integer"},
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string"},
+                "type": {"type": "string"},
+                "size": {"type": "integer"}
+              }
+            }
+          }
+        },
+        "required": ["path", "count", "entries"]
+      },
+      "permissions": ["service.file.read"],
+      "timeout_ms": 2000,
+      "implementation": "capability.file.impl.list_dir",
+      "status": "active"
+    },
+    {
+      "name": "file.exists",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "检查路径是否存在。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"}
+        },
+        "required": ["path"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"},
+          "exists": {"type": "boolean"}
+        },
+        "required": ["path", "exists"]
+      },
+      "permissions": ["service.file.read"],
+      "timeout_ms": 1000,
+      "implementation": "capability.file.impl.exists",
+      "status": "active"
+    }
+  ]
+}

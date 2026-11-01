@@ -1,0 +1,24 @@
+[Unit]
+Description=VENTUNO Q local face enrollment and identity matcher
+After=vq-camera-stream.service vq-face-vault.service vq-events.service vq-output.service
+Requires=vq-camera-stream.service vq-face-vault.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=OMP_NUM_THREADS=1
+Environment=OPENBLAS_NUM_THREADS=1
+ExecStart=%h/.local/share/vq-pose-lab/venv/bin/python -m face_identity_service.service --host 127.0.0.1 --port 8795 --fps 2
+Restart=on-failure
+RestartSec=2
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>StarBuddy 星伴</title>
+  <link rel="stylesheet" href="/display.css">
+  <link rel="stylesheet" href="/wave.css">
+<link rel="stylesheet" href="/mode.css"><link rel="stylesheet" href="/theme.css"></head>
+<body class="theme-page theme-chat">
+  <main id="stage" class="stage idle calm">
+    <div class="ambient ambient-a" aria-hidden="true"></div>
+    <div class="ambient ambient-b" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">✦</span><span>StarBuddy</span><small>星伴</small></div>
+      <div class="trust" id="privacy-mode"><span class="trust-dot"></span>默认板端处理 · 云端对话可选</div>
+      <a id="identity-entry" class="identity-entry" href="http://127.0.0.1:8795/?mode=manage"><i></i><span>身份入口</span><small>切换 / 注册</small></a>
+      <div id="clock" class="clock">--:--</div>
+    </header>
+
+    <section class="workspace">
+      <article class="companion-card glass">
+        <div class="companion-heading">
+          <span id="mood-label" class="eyebrow">陪伴模式</span>
+          <span class="online-pill"><i></i>本地在线</span>
+        </div>
+
+        <button id="buddy" class="buddy" type="button" aria-label="轻触星伴开始交流">
+          <img class="buddy-art curious" src="/home-buddy-curious.svg" alt="" width="480" height="420">
+          <img class="buddy-art listening" src="/home-buddy-listening.svg" alt="" width="312" height="273">
+          <img class="buddy-art amused" src="/home-buddy-amused.svg" alt="" width="312" height="273">
+        </button>
+
+        <div class="dialogue" aria-live="polite">
+          <h1 id="primary">嗨，我是星伴</h1>
+          <p id="secondary">碰一碰我，或者让我看看周围</p>
+        </div>
+
+        <form id="chat-form" class="tts-test">
+          <label for="chat-text"><b>文字对话</b><small>默认本地 Qwen · 临时短期上下文 · 回答会自动朗读</small></label>
+          <div class="tts-row">
+            <input id="chat-text" type="text" maxlength="500" autocomplete="off" placeholder="没有麦克风时，在这里和星伴聊天…" required>
+            <button id="chat-reset" class="secondary" type="button">清空</button>
+            <button id="turn-stop" class="secondary" type="button">停止回答</button>
+            <button id="chat-send" type="submit">发送</button>
+          </div>
+          <label class="cloud-option" for="chat-cloud">
+            <input id="chat-cloud" type="checkbox" disabled>
+            <span id="chat-cloud-label">云端会话（尚未配置）</span>
+          </label>
+          <details id="turn-details" class="turn-diagnostics">
+            <summary>本轮依据与耗时：等待第一次对话</summary>
+            <div id="turn-evidence">尚无本轮状态</div>
+            <div id="turn-timing"></div>
+          </details>
+        </form>
+
+        <section id="task-confirm" class="task-confirm" hidden aria-live="polite">
+          <div><b>确认任务</b><small id="task-summary">等待确认</small></div>
+          <div class="task-confirm-actions">
+            <button id="task-cancel" class="secondary" type="button">取消</button>
+            <button id="task-accept" type="button">确认创建</button>
+          </div>
+        </section>
+
+        <div class="actions" aria-label="互动功能">
+          <button id="voice-action" class="action primary-action" type="button"><span>●</span><b>和我说话</b><small>点一下后直接说</small></button>
+          <button id="touch-action" class="action primary-action" type="button"><span>✦</span><b>碰一碰</b><small>触碰交流</small></button>
+          <button id="observe-action" class="action" type="button"><span>◉</span><b>看看周围</b><small>识别物体</small></button>
+          <button id="vision-toggle" class="action" type="button"><span>◌</span><b>开启视觉</b><small>静默感知</small></button>
+        </div>
+
+        <div id="choices" class="choices" hidden>
+          <button type="button" data-choice="sad">今天有点难过</button>
+          <button type="button" data-choice="chat">想和你聊聊天</button>
+          <button type="button" data-choice="okay">只是来看看你</button>
+        </div>
+      </article>
+
+      <article id="vision-card" class="vision-card glass offline">
+        <div class="panel-heading">
+          <div><span class="eyebrow">本地视觉</span><h2>星伴看到的世界</h2></div>
+          <span id="camera-state" class="camera-state"><i></i>未开启</span>
+        </div>
+
+        <nav id="camera-tabs" class="camera-tabs" aria-label="摄像头视图">
+          <button type="button" data-camera-mode="dual" class="active">双路</button>
+          <button type="button" data-camera-mode="camera.front">前置</button>
+          <button type="button" data-camera-mode="camera.environment">环境</button>
+        </nav>
+
+        <button id="camera-surface" class="camera-surface" type="button" aria-label="开启视觉或重新识别">
+          <span id="camera-feeds" class="camera-feeds dual">
+            <span class="camera-feed" data-source="camera.front">
+              <img id="preview-front" alt="前置摄像头实时画面"><b>前置 · 人脸</b>
+            </span>
+            <span class="camera-feed" data-source="camera.environment">
+              <img id="preview-environment" alt="环境摄像头实时画面"><b>环境 · 姿态与物体</b>
+            </span>
+          </span>
+          <span class="camera-placeholder"><i>◉</i><b>轻触开启视觉陪伴</b><small>画面不会离开这块板卡</small></span>
+          <span class="scan-line" aria-hidden="true"></span>
+          <span class="live-badge"><i></i>LIVE</span>
+        </button>
+
+        <div class="vision-result">
+          <div class="result-title"><span>刚刚识别到</span><span id="vision-time">等待观察</span></div>
+          <div id="object-chips" class="object-chips"><span class="empty-chip">尚无识别结果</span></div>
+          <p id="vision-description">双摄共享底层画面；物体识别使用环境摄像头，人脸与身份使用前置摄像头。</p>
+        </div>
+
+        <div class="privacy-note"><span>⌁</span><p><b>隐私保护</b><small>预览仅保留最新一帧，识别帧使用后立即释放</small></p></div>
+      </article>
+    </section>
+
+    <footer class="footerbar">
+      <div class="phase"><span class="phase-dot"></span><span id="phase">准备好了</span></div>
+      <a id="posture-status" class="posture-status unknown" href="/posture"><i></i><span>坐姿守护连接中</span><small>点此校准或查看</small></a>
+      <div class="capabilities"><span>DJI Mic</span><span>本地视觉</span><span>本地对话</span><span>HDMI 语音</span></div>
+    </footer>
+  </main>
+  <script src="/mode.js"></script><script src="/display.js"></script>
+<script src="/wave.js"></script>
+</body>
+</html>

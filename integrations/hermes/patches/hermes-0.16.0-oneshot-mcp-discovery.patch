@@ -1,0 +1,22 @@
+diff --git a/hermes_cli/oneshot.py b/hermes_cli/oneshot.py
+index 4b33976..c0ccf9d 100644
+--- a/hermes_cli/oneshot.py
++++ b/hermes_cli/oneshot.py
+@@ -329,6 +329,17 @@ def _run_agent(
+     # Read the effective fallback chain from profile config so oneshot workers
+     # honour the same merge semantics as interactive CLI and gateway sessions.
+     _fb = get_fallback_chain(cfg)
++
++    # The top-level CLI starts MCP discovery in a background thread.  Unlike
++    # the interactive CLI setup path, one-shot mode used to snapshot tools
++    # immediately, often constructing AIAgent with zero MCP tools.  Wait for
++    # an already-running discovery and perform the idempotent discovery once
++    # synchronously before taking the agent's tool snapshot.
++    from hermes_cli.mcp_startup import wait_for_mcp_discovery
++    from tools.mcp_tool import discover_mcp_tools
++
++    wait_for_mcp_discovery(timeout=120.0)
++    discover_mcp_tools()
+ 
+     agent = AIAgent(
+         api_key=runtime.get("api_key"),

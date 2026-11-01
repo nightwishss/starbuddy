@@ -1,0 +1,27 @@
+name: Source checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  syntax-and-boundaries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check Python, JSON and publication exclusions
+        run: python -B tools/check_public_source.py --snapshot
+      - name: Check JavaScript syntax
+        run: find . -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -not -path './.git/*' -print0 | xargs -0 -r -n1 node --check
+      - name: Run selected hardware-free unit tests
+        env:
+          PYTHONPATH: .:tests
+        run: |
+          python -m pip install msgpack==1.1.2
+          python -B -m unittest test_child_safety test_runtime_resources test_turn_manager test_affect_estimator

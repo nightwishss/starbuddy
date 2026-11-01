@@ -1,0 +1,164 @@
+{
+  "capabilities": [
+    {
+      "name": "camera.list",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "列出板端UVC摄像头，以稳定camera_id返回设备、采集节点和能力摘要。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "cameras": {"type": "array", "items": {"type": "object"}},
+          "count": {"type": "integer"}
+        },
+        "required": ["cameras", "count"]
+      },
+      "permissions": ["device.camera.read"],
+      "timeout_ms": 5000,
+      "implementation": "capability.camera.impl.list_cameras",
+      "status": "active"
+    },
+    {
+      "name": "camera.get_info",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "查询指定UVC摄像头支持的输入像素格式、分辨率和可调控制项。",
+      "input": {
+        "type": "object",
+        "properties": {"camera_id": {"type": "string"}},
+        "required": ["camera_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "camera_id": {"type": "string"},
+          "name": {"type": "string"},
+          "device": {"type": "string"},
+          "connected": {"type": "boolean"},
+          "formats": {"type": "array", "items": {"type": "object"}},
+          "controls": {"type": "array", "items": {"type": "object"}}
+        },
+        "required": ["camera_id", "name", "device", "connected", "formats", "controls"]
+      },
+      "permissions": ["device.camera.read"],
+      "timeout_ms": 5000,
+      "implementation": "capability.camera.impl.get_info",
+      "status": "active"
+    },
+    {
+      "name": "camera.snapshot",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "从稳定camera_id或逻辑角色采集一帧；按裁剪、旋转、缩放顺序生成共享Media对象和兼容frame_id。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "camera_id": {"type": "string"},
+          "role": {"type": "string"},
+          "source": {
+            "type": "object",
+            "properties": {
+              "width": {"type": "integer", "minimum": 160, "maximum": 4096},
+              "height": {"type": "integer", "minimum": 120, "maximum": 2160},
+              "pixel_format": {"type": "string", "enum": ["mjpeg", "yuyv422"]},
+              "fps": {"type": "integer", "minimum": 1, "maximum": 60}
+            },
+            "additionalProperties": false
+          },
+          "transform": {
+            "type": "object",
+            "properties": {
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "x": {"type": "integer", "minimum": 0, "maximum": 4095},
+                  "y": {"type": "integer", "minimum": 0, "maximum": 2159},
+                  "width": {"type": "integer", "minimum": 2, "maximum": 4096},
+                  "height": {"type": "integer", "minimum": 2, "maximum": 2160}
+                },
+                "required": ["x", "y", "width", "height"],
+                "additionalProperties": false
+              },
+              "rotation": {"type": "integer", "enum": [0, 90, 180, 270]},
+              "resize": {
+                "type": "object",
+                "properties": {
+                  "width": {"type": "integer", "minimum": 64, "maximum": 4096},
+                  "height": {"type": "integer", "minimum": 64, "maximum": 2160}
+                },
+                "required": ["width", "height"],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "quality": {"type": "integer", "minimum": 40, "maximum": 95}
+        },
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "frame_id": {"type": "string"},
+          "media_id": {"type": "string"},
+          "camera_id": {"type": "string"},
+          "mime_type": {"type": "string"},
+          "width": {"type": "integer"},
+          "height": {"type": "integer"},
+          "source": {"type": "object"},
+          "transform": {"type": "object"},
+          "size": {"type": "integer"},
+          "expires_at": {"type": "number"}
+        },
+        "required": ["frame_id", "media_id", "camera_id", "mime_type", "width", "height", "source", "transform", "size", "expires_at"]
+      },
+      "permissions": ["device.camera.capture"],
+      "timeout_ms": 15000,
+      "expose_to_agent": false,
+      "implementation": "capability.camera.impl.snapshot",
+      "status": "active"
+    },
+    {
+      "name": "camera.frame_info",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "读取Runtime拥有的临时摄像头帧元数据，不返回原始像素或路径。",
+      "input": {
+        "type": "object",
+        "properties": {"frame_id": {"type": "string"}},
+        "required": ["frame_id"],
+        "additionalProperties": false
+      },
+      "output": {"type": "object"},
+      "permissions": ["device.camera.read"],
+      "timeout_ms": 1000,
+      "expose_to_agent": false,
+      "implementation": "capability.camera.impl.frame_info",
+      "status": "active"
+    },
+    {
+      "name": "camera.release_frame",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "释放临时摄像头帧并删除其受控缓存文件。",
+      "input": {
+        "type": "object",
+        "properties": {"frame_id": {"type": "string"}},
+        "required": ["frame_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {"frame_id": {"type": "string"}, "released": {"type": "boolean"}},
+        "required": ["frame_id", "released"]
+      },
+      "permissions": ["device.camera.capture"],
+      "timeout_ms": 1000,
+      "expose_to_agent": false,
+      "implementation": "capability.camera.impl.release_frame",
+      "status": "active"
+    }
+  ]
+}

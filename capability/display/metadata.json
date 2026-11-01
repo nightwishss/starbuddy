@@ -1,0 +1,215 @@
+{
+  "capabilities": [
+    {
+      "name": "display.list",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "列出可用 display backend 与当前活跃的 display 会话 (display_id)。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "backends": {"type": "array", "items": {"type": "string"}},
+          "active": {"type": "array", "items": {"type": "string"}},
+          "count": {"type": "integer"}
+        },
+        "required": ["backends", "active", "count"]
+      },
+      "permissions": ["device.display.read"],
+      "timeout_ms": 1000,
+      "implementation": "capability.display.impl.list_displays",
+      "status": "active"
+    },
+    {
+      "name": "display.get_info",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "查询 display 能力与当前 backend 信息 (软件/物理、分辨率上限、格式)。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "backend": {"type": "string"},
+          "type": {"type": "string"},
+          "physical": {"type": "boolean"},
+          "max_width": {"type": "integer"},
+          "max_height": {"type": "integer"},
+          "formats": {"type": "array", "items": {"type": "string"}}
+        },
+        "required": ["backend", "type", "physical"]
+      },
+      "permissions": ["device.display.read"],
+      "timeout_ms": 1000,
+      "implementation": "capability.display.impl.get_info",
+      "status": "active"
+    },
+    {
+      "name": "display.open",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "创建framebuffer或X11 display会话，返回display_id。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "width": {"type": "integer", "minimum": 64, "maximum": 4096},
+          "height": {"type": "integer", "minimum": 64, "maximum": 4096},
+          "backend": {"type": "string", "enum": ["framebuffer", "x11"]},
+          "display": {"type": "string"},
+          "title": {"type": "string"}
+        },
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "width": {"type": "integer"},
+          "height": {"type": "integer"},
+          "backend": {"type": "string"}
+        },
+        "required": ["display_id", "width", "height"]
+      },
+      "permissions": ["device.display.write"],
+      "timeout_ms": 2000,
+      "implementation": "capability.display.impl.open_display",
+      "status": "active"
+    },
+    {
+      "name": "display.show_text",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "在指定 display 上渲染文字 (可选 position [x,y])。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "text": {"type": "string"},
+          "position": {"type": "array", "items": {"type": "integer"}}
+        },
+        "required": ["display_id", "text"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "text": {"type": "string"},
+          "rendered": {"type": "boolean"}
+        },
+        "required": ["display_id", "rendered"]
+      },
+      "permissions": ["device.display.write"],
+      "timeout_ms": 2000,
+      "implementation": "capability.display.impl.show_text",
+      "status": "active"
+    },
+    {
+      "name": "display.show_image",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "在指定 display 上显示图片 (自动缩放适配; 支持 PNG 等 Pillow 可解码格式)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "path": {"type": "string"}
+        },
+        "required": ["display_id", "path"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "path": {"type": "string"},
+          "rendered": {"type": "boolean"}
+        },
+        "required": ["display_id", "rendered"]
+      },
+      "permissions": ["device.display.write"],
+      "timeout_ms": 3000,
+      "implementation": "capability.display.impl.show_image",
+      "status": "active"
+    },
+    {
+      "name": "display.clear",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "清空指定 display (默认填充黑色)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "color": {"type": "string"}
+        },
+        "required": ["display_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "cleared": {"type": "boolean"}
+        },
+        "required": ["display_id", "cleared"]
+      },
+      "permissions": ["device.display.write"],
+      "timeout_ms": 2000,
+      "implementation": "capability.display.impl.clear_display",
+      "status": "active"
+    },
+    {
+      "name": "display.capture",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "把当前 display 内容保存为 PNG 截图 (用于远程确认渲染结果)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "path": {"type": "string"}
+        },
+        "required": ["display_id", "path"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "path": {"type": "string"}
+        },
+        "required": ["display_id", "path"]
+      },
+      "permissions": ["device.display.read"],
+      "timeout_ms": 3000,
+      "implementation": "capability.display.impl.capture",
+      "status": "active"
+    },
+    {
+      "name": "display.close",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "关闭并销毁指定 display 会话 (释放资源, 之后 display_id 失效)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"}
+        },
+        "required": ["display_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "display_id": {"type": "string"},
+          "closed": {"type": "boolean"}
+        },
+        "required": ["display_id", "closed"]
+      },
+      "permissions": ["device.display.write"],
+      "timeout_ms": 2000,
+      "implementation": "capability.display.impl.close_display",
+      "status": "active"
+    }
+  ]
+}

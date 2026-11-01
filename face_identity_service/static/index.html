@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>StarBuddy · 认识你</title><link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main>
+    <header><div><p>STARBUDDY · LOCAL IDENTITY</p><h1>让我认识你</h1><small>本地识别 · 原图不保存 · 随时可以删除</small></div><div class="header-actions"><button id="return-buddy" class="quiet" type="button">← 返回星伴</button><span id="health">连接中</span></div></header>
+    <section class="stage">
+      <div class="viewer"><img id="camera" alt="前置摄像头"><canvas id="overlay"></canvas><div id="face-state">正在等待摄像头</div></div>
+      <aside>
+        <div class="panel"><h2>身份状态</h2><div id="recognition" class="recognition">尚未识别</div><div id="metrics"></div></div>
+        <div class="panel enrollment">
+          <h2>注册新用户</h2>
+          <label>你希望我怎么称呼你<input id="label" maxlength="96" placeholder="例如 April"></label>
+          <label>Profile ID（可选）<input id="profile" maxlength="96" placeholder="例如 owner"></label>
+          <label class="consent"><input id="consent" type="checkbox"><span>我同意仅在本机保存加密人脸特征。不会保存照片，也不会上传云端；我可随时删除。</span></label>
+          <div id="progress"><i></i><i></i><i></i><span>正视 → 左转 → 右转</span></div>
+          <p id="instruction">勾选同意后开始采集</p>
+          <div class="actions"><button id="start">开始采集</button><button id="commit" disabled>确认保存</button><button id="cancel" class="quiet" disabled>取消</button></div>
+          <p class="warning">这是个性化识别，不用于门锁、支付或身份认证。普通 RGB 摄像头不能提供安全级活体检测。</p>
+        </div>
+      </aside>
+    </section>
+    <section class="panel identities"><div class="section-title"><h2>已认识的人</h2><button id="refresh" class="quiet">刷新</button></div><div id="identity-list">当前为空</div></section>
+  </main><script src="/app.js"></script>
+</body></html>

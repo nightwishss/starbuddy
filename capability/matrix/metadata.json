@@ -1,0 +1,44 @@
+{
+  "capabilities": [
+    {
+      "name": "matrix.draw", "version": "1.0.0", "type": "command",
+      "description": "在8x13蓝色LED矩阵显示一帧104像素图案，亮度范围0到7。",
+      "input": {"type":"object","properties":{"pixels":{"type":"array","minItems":104,"maxItems":104,"items":{"type":"integer","minimum":0,"maximum":7}}},"required":["pixels"],"additionalProperties":false},
+      "output": {"type":"object","properties":{"drawn":{"type":"boolean"},"lit_pixels":{"type":"integer"}},"required":["drawn","lit_pixels"]},
+      "permissions":["device.matrix.write"], "timeout_ms":2000,
+      "implementation":"capability.matrix.impl.draw", "status":"active"
+    },
+    {
+      "name": "matrix.icon", "version": "1.0.0", "type": "command",
+      "description": "在8x13蓝色LED矩阵显示内置图标。",
+      "input": {"type":"object","properties":{"name":{"type":"string","enum":["check","cross","heart","smile"]},"brightness":{"type":"integer","minimum":1,"maximum":7}},"required":["name"],"additionalProperties":false},
+      "output": {"type":"object","properties":{"drawn":{"type":"boolean"},"icon":{"type":"string"},"lit_pixels":{"type":"integer"}},"required":["drawn","icon","lit_pixels"]},
+      "permissions":["device.matrix.write"], "timeout_ms":2000,
+      "implementation":"capability.matrix.impl.icon", "status":"active"
+    },
+    {
+      "name": "matrix.blink", "version": "1.0.0", "type": "command",
+      "description": "让8x13蓝色LED矩阵上的内置图标按固定间隔闪烁，最长30秒。",
+      "input": {"type":"object","properties":{"name":{"type":"string","enum":["check","cross","heart","smile"]},"brightness":{"type":"integer","minimum":1,"maximum":7},"duration_seconds":{"type":"integer","minimum":1,"maximum":30},"interval_ms":{"type":"integer","minimum":100,"maximum":2000},"end_state":{"type":"string","enum":["on","off"]}},"required":["name"],"additionalProperties":false},
+      "output": {"type":"object","properties":{"blinked":{"type":"boolean"},"icon":{"type":"string"},"cycles":{"type":"integer"},"end_state":{"type":"string"}},"required":["blinked","icon","cycles","end_state"]},
+      "permissions":["device.matrix.write"], "timeout_ms":35000,
+      "implementation":"capability.matrix.impl.blink", "status":"active"
+    },
+    {
+      "name": "matrix.clear", "version": "1.0.0", "type": "command",
+      "description": "熄灭8x13蓝色LED矩阵。",
+      "input":{"type":"object","properties":{},"additionalProperties":false},
+      "output":{"type":"object","properties":{"cleared":{"type":"boolean"}},"required":["cleared"]},
+      "permissions":["device.matrix.write"], "timeout_ms":2000,
+      "implementation":"capability.matrix.impl.clear", "status":"active"
+    },
+    {
+      "name": "matrix.status", "version": "1.0.0", "type": "query",
+      "description": "检查MCU LED矩阵桥接服务是否就绪。",
+      "input":{"type":"object","properties":{},"additionalProperties":false},
+      "output":{"type":"object","properties":{"ready":{"type":"boolean"},"rows":{"type":"integer"},"columns":{"type":"integer"}},"required":["ready","rows","columns"]},
+      "permissions":["device.matrix.read"], "timeout_ms":1000,
+      "implementation":"capability.matrix.impl.status", "status":"active"
+    }
+  ]
+}

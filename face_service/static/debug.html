@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>StarBuddy · Face Lab</title>
+  <link rel="stylesheet" href="/debug/style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">STARBUDDY · LOCAL PERCEPTION</p>
+        <h1>Face Lab</h1>
+        <p class="subtitle">双摄人脸检测与临时追踪 · 本地运行 · 不保存画面</p>
+      </div>
+      <div id="system-status" class="system-pill"><span></span>正在连接</div>
+    </header>
+
+    <nav aria-label="视图选择">
+      <button data-mode="dual" class="active">双路</button>
+      <button data-mode="camera.front">前置</button>
+      <button data-mode="camera.environment">环境</button>
+    </nav>
+
+    <section id="camera-grid" class="camera-grid dual">
+      <article class="camera-card" data-source="camera.front">
+        <div class="card-head">
+          <div><span class="camera-dot front"></span><strong>前置摄像头</strong></div>
+          <span class="face-badge">等待画面</span>
+        </div>
+        <div class="viewport">
+          <img alt="前置摄像头实时画面">
+          <canvas></canvas>
+          <div class="empty">正在连接前置摄像头…</div>
+        </div>
+        <div class="metrics"><span>序列 —</span><span>延迟 —</span></div>
+      </article>
+
+      <article class="camera-card" data-source="camera.environment">
+        <div class="card-head">
+          <div><span class="camera-dot environment"></span><strong>环境摄像头</strong></div>
+          <span class="face-badge">等待画面</span>
+        </div>
+        <div class="viewport">
+          <img alt="环境摄像头实时画面">
+          <canvas></canvas>
+          <div class="empty">正在连接环境摄像头…</div>
+        </div>
+        <div class="metrics"><span>序列 —</span><span>延迟 —</span></div>
+      </article>
+    </section>
+
+    <footer>
+      <span><i class="legend confirmed"></i>已确认</span>
+      <span><i class="legend candidate"></i>确认中</span>
+      <span class="privacy">所有 Track ID 均为临时编号，尚未关联真实身份</span>
+    </footer>
+  </main>
+  <script src="/debug/app.js"></script>
+</body>
+</html>

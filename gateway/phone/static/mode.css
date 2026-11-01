@@ -1,0 +1,3 @@
+.mode-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;color:var(--muted);font-size:12px}
+.mode-row select{margin-left:auto;width:auto;max-width:72%;padding:8px 10px;background:#14211b;color:var(--ink);border:1px solid #344b40;border-radius:12px;font:inherit;outline:none}
+.mode-row select:focus{border-color:var(--accent)}

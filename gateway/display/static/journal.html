@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StarBuddy · 树洞与日记</title><link rel="stylesheet" href="/journal.css"><link rel="stylesheet" href="/mode.css"><link rel="stylesheet" href="/theme.css"></head>
+<body class="theme-page theme-journal">
+<header><a id="back" href="/">← 返回星伴</a><span>STAR BUDDY · 给心情一点空间</span><button id="lock" type="button">清屏并锁定</button></header>
+<main>
+  <aside>
+    <span class="eyebrow">A LITTLE ROOM FOR YOU</span><h1>有些话，<br>只想轻轻说。</h1>
+    <svg viewBox="0 0 340 300" role="img" aria-label="一棵安静的大树，树洞里有一颗小星星">
+      <ellipse cx="170" cy="274" rx="125" ry="14" fill="#d9dfc6"/>
+      <path d="M143 132h56l-2 105 27 36H112l30-36z" fill="#a27b58"/>
+      <path d="M144 179l-35-39m87 36 41-48" stroke="#a27b58" stroke-width="18" stroke-linecap="round"/>
+      <path d="M66 166C15 114 80 52 113 63 120-7 230 6 234 67c74-1 95 83 45 107-41 31-161 29-213-8z" fill="#749383"/>
+      <path d="M73 120c20-40 45-24 59-49m93 54c18-24 40-8 48-23" fill="none" stroke="#a3b8a0" stroke-width="6" stroke-linecap="round"/>
+      <ellipse cx="170" cy="223" rx="25" ry="34" fill="#654f43"/>
+      <path d="m169 204 5 12 13 1-10 9 3 13-11-7-11 7 3-13-10-9 13-1z" fill="#f4d88d"/>
+      <circle cx="277" cy="242" r="5" fill="#c9a667"/><circle cx="70" cy="249" r="4" fill="#c9a667"/>
+    </svg>
+    <nav aria-label="选择空间"><button id="tree-tab" aria-pressed="true" type="button">♧ 秘密树洞</button><button id="diary-tab" aria-pressed="false" type="button">▤ 星伴日记</button></nav>
+    <p class="small">树洞和日记是分开的。<br>切换或离开时，临时文字会清空。</p>
+  </aside>
+  <section class="panel">
+    <div id="tree-panel">
+      <span class="tag">不保存 · 不朗读 · 不发云端</span><h2>我在这里，慢慢写就好。</h2>
+      <p>第一版是文字树洞，用预设的温和回应陪你，不会假装理解每个细节。它不调用模型，也不会把这些话写进日记。</p>
+      <form id="tree-form" autocomplete="off">
+        <label for="secret">这会儿想说的话</label><textarea id="secret" maxlength="1000" rows="4" autocomplete="off" placeholder="可以写一点，也可以什么都不写。"></textarea>
+        <label for="support">我希望你…</label><select id="support"><option value="listen">静静陪我</option><option value="comfort">给我一点安慰</option></select>
+        <div class="actions"><button id="send" data-action type="submit" class="primary">轻轻说出来</button><button id="clear" type="button">让这些字离开</button></div>
+      </form>
+      <div class="answer" aria-live="polite"><span class="eyebrow">星伴</span><p id="answer">你可以随时停下。不操作 90 秒后，这里会自动清屏。</p></div>
+      <p class="small">不记录树洞原文，但文字在当前屏幕上可见。如果你正在受伤或遇到危险，请找身边可信任的大人帮助。</p>
+    </div>
+    <div id="diary-panel" hidden>
+      <span class="tag">只记下你明确选择的内容</span><h2>留下一小片今天。</h2>
+      <p class="small">本机日记本 · 最多 100 条 · 30 天后失效，下次访问时清理。没有自动摘录、情绪推断或家长导出。</p>
+      <form id="unlock-form" autocomplete="off">
+        <h3 id="unlock-title">打开日记本</h3><label for="passphrase">本机口令（6–64 个字符，建议用较长短语）</label>
+        <input id="passphrase" type="password" minlength="6" maxlength="64" autocomplete="off" required>
+        <div id="confirm-wrap" hidden><label for="confirm-passphrase">再输入一次</label><input id="confirm-passphrase" type="password" maxlength="64" autocomplete="off"></div>
+        <button id="unlock" data-action type="submit" class="primary">解锁</button>
+        <p class="small">由你或可信任的大人设置口令；持有口令的人可以查看此日记本。口令不会自动记住，5 分钟后自动锁定。此锁不是磁盘加密，设备管理员仍可能读取本机文件；忘记口令需要管理员协助。</p>
+      </form>
+      <div id="notebook" hidden>
+        <form id="note-form" autocomplete="off">
+          <label for="note">我愿意记下的事（不会从树洞带入）</label><textarea id="note" maxlength="1000" rows="3" autocomplete="off" placeholder="例如：今天我给小怪兽选了一顶蓝帽子。" required></textarea>
+          <label for="mood">我自己选择的心情（可不选）</label><select id="mood"><option value="unknown">不选择 / 不确定</option><option value="happy">开心</option><option value="calm">平静</option><option value="sad">难过</option><option value="worried">担心</option><option value="angry">生气</option><option value="mixed">说不清 / 混合</option></select>
+          <button id="preview" data-action type="submit">预览，不保存</button>
+        </form>
+        <div id="preview-panel" class="answer" hidden><h3>准备保存的内容</h3><p id="preview-text"></p><p id="preview-mood" class="small"></p>
+          <label class="consent"><input id="consent" type="checkbox">我愿意将这段文字和自选心情保存在本机日记中</label>
+          <div class="actions"><button id="save" data-action class="primary" type="button" disabled>确认保存</button><button id="discard" type="button">取消草稿</button></div>
+        </div>
+        <div class="entries-heading"><h3>已经记下的片刻</h3><button id="refresh" data-action type="button">刷新</button></div><div id="entries"></div>
+      </div>
+    </div>
+    <p id="status" role="status"></p>
+  </section>
+</main><script src="/mode.js"></script><script src="/journal.js"></script></body></html>

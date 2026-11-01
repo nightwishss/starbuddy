@@ -1,0 +1,15 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>StarBuddy · 远程拥抱</title><link rel="stylesheet" href="/hugs.css"><link rel="stylesheet" href="/mode.css"><link rel="stylesheet" href="/theme.css"></head>
+<body class="theme-page theme-hugs"><header><a href="/">← 返回星伴</a><span>星伴 · 陪伴小站</span><span>本地连接</span></header>
+<main><section class="hero"><p class="eyebrow">一份关心，轻轻送达</p><h1>隔着屏幕，<br>也能抱抱你。</h1><p>你来决定什么时候接收。这里不使用摄像头，也不录音，<br>只是一个温柔的小问候。</p>
+<img id="face" class="hug-buddy" src="/home-buddy-amused.svg" alt="笑着的星伴" width="312" height="273">
+<div id="receipt" class="receipt" role="status">还没有新的拥抱</div><p class="small">设备回执只表示处理结果，不代表对方已经看见或听见。</p></section>
+<section class="card"><p class="eyebrow">由你掌控</p><h2>我的接收设置</h2>
+<label class="toggle"><input id="enabled" type="checkbox">接收远程拥抱 <small>关闭就是勿扰</small></label>
+<label class="toggle"><input id="muted" type="checkbox" checked>安静模式 <small>只显示，不说话</small></label>
+<button id="apply" class="primary">保存设置</button>
+<div class="divider"></div><h3>邀请一个熟悉的人</h3><p class="small">仅授权发送三种问候，不能查看聊天、树洞、日记或媒体。授权 1 小时；配对码仅可使用一次。</p>
+<div class="actions"><button id="invite">显示 2 分钟授权码</button><button id="revoke">撤销全部授权</button></div>
+<div id="invitation" class="invitation" hidden><strong id="code"></strong><p>手机打开 <b>https://ventunoq.local:8443/hug</b><br>或 https://100.88.91.75:8443/hug（需已连接 Tailscale）</p><p class="small">需要信任现有设备证书；不要忽略证书安全警告。请只把授权码给你信任的人。</p></div>
+<div class="divider"></div><div class="actions"><button id="demo">在这里试一次抱抱</button><span id="paired" class="small"></span></div>
+<p class="small">先开启接收；试播也会遵守安静模式。两次拥抱至少间隔 20 秒。首版不支持个人录音或身体动作。</p>
+<p id="status" role="status"></p></section></main><script src="/mode.js"></script><script src="/hugs.js"></script></body></html>

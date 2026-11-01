@@ -1,0 +1,22 @@
+[Unit]
+Description=VENTUNO Q independent posture policy service
+After=vq-runtime.service vq-camera-stream.service vq-pose-npu.service vq-events.service vq-output.service vq-local-llm.service
+Wants=vq-runtime.service vq-camera-stream.service vq-pose-npu.service vq-events.service vq-output.service vq-local-llm.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 -m posture_service.service
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/vq-platform
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=default.target

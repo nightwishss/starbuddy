@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>StarBuddy 坐姿守护</title>
+  <link rel="stylesheet" href="/posture.css">
+<link rel="stylesheet" href="/mode.css"><link rel="stylesheet" href="/theme.css"></head>
+<body class="theme-page theme-posture landscape-app">
+  <main class="app" id="app" data-state="model_unavailable">
+    <header>
+      <div class="identity"><span class="mark">S</span><div><b>坐姿守护</b><small>POSTURE COACH</small></div></div>
+      <div class="privacy"><i></i>仅在板端分析 · 不保存画面</div>
+      <button id="posture-back" class="back-button" type="button">← 返回星伴</button>
+      <time id="clock">--:--</time>
+    </header>
+
+    <section class="workspace">
+      <article class="camera-card">
+        <div class="camera-heading">
+          <div><span class="eyebrow">LIVE POSTURE VIEW</span><h1>坐姿取景</h1></div>
+          <span class="camera-pill" id="camera-pill"><i></i><b>正在连接</b></span>
+        </div>
+        <div class="camera-frame">
+          <img id="camera" data-preview="/api/pose/frame.jpg" alt="本地姿态关键点画面">
+          <div class="guide" aria-hidden="true"><i class="head"></i><i class="shoulder"></i><i class="spine"></i><i class="hip"></i></div>
+          <div class="scan" aria-hidden="true"></div>
+          <div class="frame-hint"><b>建议取景</b><span>头部 · 双肩 · 胸口 · 髋部</span></div>
+          <span class="local-badge">LOCAL POSE · NO RECORDING</span>
+        </div>
+      </article>
+
+      <aside class="coach-card">
+        <div class="coach-readout screen-scroll">
+        <div class="status-top"><span class="eyebrow">POSTURE STATUS</span><span class="test-badge">测试应用</span></div>
+        <div class="monitor-control"><button class="primary" id="monitor-toggle" type="button" disabled aria-pressed="false">确认守护状态中</button><p id="monitor-state" role="status">正在连接后台守护</p></div>
+        <div class="gauge" id="gauge"><div><strong id="progress">--</strong><small id="gauge-label">等待模型</small></div></div>
+        <section class="message">
+          <h2 id="state-title">姿态模型待安装</h2>
+          <p id="state-message">视频链路已经就绪，当前不会把人物检测误当作驼背判断。</p>
+        </section>
+        <div class="metrics">
+          <div><span>上半身检出率</span><b id="success">--</b></div>
+          <div><span>推理延迟</span><b id="latency">--</b></div>
+          <div><span>检测来源</span><b id="source">正在加载</b></div>
+        </div>
+        <div class="reason" id="reason"><i>✓</i><div><b>当前无姿势结论</b><small>低置信度必须保持 unknown</small></div></div>
+        <p class="boundary" id="posture-boundary">先校准；持续偏离 20 秒才提醒，看不清时不作判断。</p>
+        </div>
+        <div class="posture-notices"><p class="reminder-status" id="reminder-status" role="status">正在确认语音提醒状态</p><p class="request-status" id="request-status" role="status"></p></div>
+        <div class="actions">
+          <button class="primary" id="calibrate"><span>校准健康坐姿</span><small>坐直并保持 10 秒</small></button>
+          <button class="secondary" id="simulate">测试提醒</button>
+          <button class="secondary" id="reset">重置</button>
+        </div>
+      </aside>
+    </section>
+
+    <footer><span><i></i>摄像头流仅用于姿态判断</span><span>MediaPipe Pose Lite · Board Local</span></footer>
+  </main>
+  <script src="/mode.js"></script><script src="/posture.js"></script>
+</body>
+</html>

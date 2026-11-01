@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "schemas": {
+    "posture.features.v1": {
+      "task": "posture.classifier",
+      "fields": {
+        "head_forward_ratio": {"type": "number", "minimum": -10, "maximum": 10},
+        "head_height_ratio": {"type": "number", "minimum": -10, "maximum": 10},
+        "shoulder_slope_ratio": {"type": "number", "minimum": -10, "maximum": 10},
+        "torso_lean_degrees": {"type": "number", "minimum": -180, "maximum": 180},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "required": ["head_forward_ratio", "head_height_ratio", "shoulder_slope_ratio", "torso_lean_degrees", "confidence"]
+    },
+    "vision.objects.v1": {
+      "task": "vision.objects",
+      "fields": {
+        "counts": {"type": "count_map", "maximum_items": 20, "maximum": 100},
+        "human_present": {"type": "boolean"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "required": ["counts", "human_present", "confidence"]
+    },
+    "system.resources.v1": {
+      "task": "system.anomaly",
+      "fields": {
+        "cpu_percent": {"type": "number", "minimum": 0, "maximum": 800},
+        "memory_percent": {"type": "number", "minimum": 0, "maximum": 100},
+        "temperature_celsius": {"type": "number", "minimum": -20, "maximum": 120}
+      },
+      "required": ["cpu_percent", "memory_percent", "temperature_celsius"]
+    }
+  }
+}

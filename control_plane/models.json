@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "models": [
+    {
+      "id": "qwen3-4b-instruct-2507",
+      "task": "language.generate",
+      "version": "2507",
+      "backend": "qualcomm-genie",
+      "execution": "npu",
+      "service": "vq-local-llm.service",
+      "resources": {"npu_compute": 70, "ram_mb": 5000},
+      "status": "production"
+    },
+    {
+      "id": "yolox-nano-coco-qnn",
+      "task": "vision.objects",
+      "version": "arduino-app-lab-pinned",
+      "backend": "qnn-htp-container",
+      "execution": "npu",
+      "service": "vq-vision-runner.service",
+      "resources": {"npu_compute": 55, "ram_mb": 700},
+      "status": "production"
+    },
+    {
+      "id": "blazepose-hybrid-qnn-fp16",
+      "task": "vision.pose",
+      "version": "2026-09-08",
+      "backend": "cpu-detector-qnn-htp-landmark",
+      "execution": "hybrid",
+      "service": "vq-pose-npu.service",
+      "resources": {"npu_compute": 35, "cpu_compute": 20, "ram_mb": 900},
+      "status": "production"
+    },
+    {
+      "id": "whisper-base",
+      "task": "speech.transcribe",
+      "version": "base",
+      "backend": "whisper.cpp",
+      "execution": "cpu",
+      "service": "vq-runtime.service",
+      "artifacts": ["~/.local/share/vq-ai/models/stt/ggml-base.bin"],
+      "resources": {"cpu_compute": 55, "ram_mb": 700},
+      "status": "production"
+    },
+    {
+      "id": "vits-melo-tts-zh-en",
+      "task": "speech.synthesize",
+      "version": "bf30582eb1b0",
+      "backend": "sherpa-onnx-vits",
+      "execution": "cpu",
+      "service": "vq-runtime.service",
+      "artifacts": [
+        "~/.local/share/vq-ai/models/tts/vits-melo-tts-zh_en/model.onnx",
+        "~/.local/share/vq-ai/models/tts/vits-melo-tts-zh_en/lexicon.txt",
+        "~/.local/share/vq-ai/models/tts/vits-melo-tts-zh_en/tokens.txt",
+        "~/.local/share/vq-ai/models/tts/vits-melo-tts-zh_en/phone.fst",
+        "~/.local/share/vq-ai/models/tts/vits-melo-tts-zh_en/date.fst",
+        "~/.local/share/vq-ai/models/tts/vits-melo-tts-zh_en/number.fst"
+      ],
+      "resources": {"cpu_compute": 50, "ram_mb": 600},
+      "status": "production"
+    },
+    {
+      "id": "matcha-icefall-zh-baker",
+      "task": "speech.synthesize",
+      "version": "steps-3-vocos",
+      "backend": "sherpa-onnx",
+      "execution": "cpu",
+      "service": "vq-runtime.service",
+      "artifacts": [
+        "~/.local/share/vq-ai/models/tts/matcha-icefall-zh-baker/model-steps-3.onnx",
+        "~/.local/share/vq-ai/models/tts/vocos-22khz-univ.onnx"
+      ],
+      "resources": {"cpu_compute": 50, "ram_mb": 1000},
+      "status": "rollback"
+    },
+    {
+      "id": "piper-huayan-medium",
+      "task": "speech.synthesize",
+      "version": "medium",
+      "backend": "piper-onnx",
+      "execution": "cpu",
+      "service": "vq-runtime.service",
+      "artifacts": ["~/.local/share/vq-ai/models/tts/zh_CN-huayan-medium.onnx"],
+      "resources": {"cpu_compute": 30, "ram_mb": 400},
+      "status": "rollback"
+    }
+  ]
+}

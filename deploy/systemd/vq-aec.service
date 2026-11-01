@@ -1,0 +1,22 @@
+[Unit]
+Description=VENTUNO Q optional WebRTC acoustic echo-cancel graph
+After=pipewire.service pipewire-pulse.service wireplumber.service
+Wants=pipewire.service pipewire-pulse.service wireplumber.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/arduino/vq-platform
+ExecStart=/usr/bin/python3 -m audio_service.service
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/run/user/1000
+RestrictAddressFamilies=AF_UNIX
+RestrictSUIDSGID=true
+LockPersonality=true
+UMask=0077
+TasksMax=32
+Environment=PYTHONDONTWRITEBYTECODE=1

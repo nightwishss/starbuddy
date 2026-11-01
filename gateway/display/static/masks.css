@@ -1,0 +1,149 @@
+/* Three-step local expression lesson; approved sprout atlas, no remote assets. */
+:root{font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;color:#344b46;background:#f6f4ed}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0}
+button,input,a{touch-action:manipulation}button,input{font:inherit}
+button{cursor:pointer;border:1px solid #ccd8ce;border-radius:12px;background:#fffdf7;color:#39574b;padding:10px 13px;min-height:44px}
+button:disabled{opacity:.43;cursor:default}button:active:not(:disabled){background:#e7efdf}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #638c69;outline-offset:3px}
+a{color:#42624e;text-decoration:none;font-weight:650}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 24px;border-bottom:1px solid #e1e7db}
+header>span{font-weight:700}.voice-switch{display:flex;align-items:center;gap:6px;font-size:14px}.voice-switch input{width:20px;height:20px;accent-color:#527652}
+.primary{background:#527652;color:white;border-color:#527652;font-weight:650}.eyebrow{font-size:11px;letter-spacing:.08em;font-weight:700;color:#74836b}
+.masks-live-main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1920px;margin:auto;padding:20px 28px}
+.lesson-card{border:1px solid #dce4d2;border-radius:22px;padding:18px;min-width:0;min-height:0;background:#fffdf6}
+.lesson-heading{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:0;font-size:clamp(17px,1.35vw,25px);line-height:1.3;font-weight:700}
+.lesson-heading h1{font:inherit;margin:0}.step-number{display:inline-grid;place-items:center;width:26px;height:26px;margin-right:5px;border-radius:50%;background:#e4ebd6;color:#5d7544;font-size:15px;vertical-align:2px}
+body.theme-page.theme-masks .lesson-heading{font-size:clamp(17px,1.35vw,25px);line-height:1.3}
+#round,.optional-label{font-size:11px;font-weight:500;color:#7b856e;white-space:nowrap}
+.stage.mask-live-stage{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto auto;gap:8px;align-items:stretch;background:#eef1df}
+.theme-page.theme-masks .stage button.portrait{display:block;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;min-height:0;background:none;box-shadow:none;overflow:visible}
+.portrait #mask{display:block;width:100%;height:100%;transform-origin:50% 88%}
+.theme-page.theme-masks .stage #mask-caption{font-size:13px;line-height:1.4;min-height:0;margin:0;text-align:center;color:#5c7051}
+.face-cues{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.face-cues>div{background:#fafbf1;border-radius:10px;padding:8px 5px;text-align:center}
+.face-cues dt{font-size:11px;color:#7c8868}.face-cues dd{font-size:13px;margin:3px 0 0;font-weight:600;line-height:1.4}
+.theme-page.theme-masks .stage .buddy-reaction{margin:0;min-height:0;font-size:11px;text-align:center;color:#6d7e5c}
+.play.lesson-card{display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px;align-self:stretch}
+.theme-page.theme-masks #intro{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:9px;min-height:0}
+.theme-page.theme-masks #intro p{margin:0;font-size:13px;line-height:1.5;color:#7a826f}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;min-height:0}
+.theme-page.theme-masks .choices .choice{display:flex;flex-direction:row;align-items:center;justify-content:center;min-width:0;min-height:44px;padding:5px;gap:3px;font-size:15px;border-radius:12px}
+.theme-page.theme-masks .choices .choice svg{width:clamp(32px,4vw,64px);height:clamp(30px,3.5vw,56px);flex:none}.choice span{font-weight:650}
+.emotion-preview button[aria-pressed=true]{background:#e8efdc;border-color:#758b51;box-shadow:inset 0 0 0 1px #758b51}
+.theme-page.theme-masks #start{width:100%;min-width:0}
+.theme-page.theme-masks #game{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;min-height:0;grid-area:auto}
+.theme-page.theme-masks .play[data-phase=feedback] .game-scroll{display:flex;flex-direction:column}.theme-page.theme-masks .play[data-phase=feedback] .response{flex:1;min-height:0;overflow:auto}
+.game-scroll{overflow:auto;min-height:0;overscroll-behavior:contain;scrollbar-width:thin}.question{font-size:12px;color:#7b836e;margin:0 0 8px}
+.response{border-radius:12px;background:#f2f2e7;padding:10px 12px;margin-top:10px;min-height:64px}.response p{font-size:clamp(14px,1.2vw,19px);line-height:1.6;margin:4px 0 0;color:#4b634c}
+.theme-page.theme-masks .round-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}.round-actions button{font-size:13px;padding:9px 12px}
+body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .round-actions{grid-template-columns:1.1fr .9fr 1.1fr}
+.theme-page.theme-masks .play[data-phase=feedback] #unsure{display:none}
+.imitation-camera.lesson-card{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:8px;background:#f9f8f0}
+.imitation-frame{position:relative;min-height:0;overflow:hidden;border:1px solid #d4ddcc;border-radius:15px;background:#e5e9dc;isolation:isolate}
+.imitation-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:rotate(180deg)}
+#imitation-placeholder{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-size:14px;line-height:1.8;color:#7c886e;padding:14px}
+.imitation-local{position:absolute;top:8px;left:8px;padding:4px 7px;font-size:10px;background:#fffff0dd;color:#5e6d53;border-radius:6px}
+.imitation-camera #imitation-state{position:absolute;bottom:0;left:0;right:0;z-index:1;font-size:11px;line-height:1.4;min-height:22px;margin:0;padding:4px 7px;color:#52624b;background:#fffff0dd}
+.recognition{padding:10px 12px;background:#eef1e2;border-radius:12px;min-height:93px}.recognition[data-state=estimated]{background:#eaf0de}.recognition p{margin:3px 0 0}
+.recognition #imitation-estimate{font-size:clamp(18px,1.6vw,28px);font-weight:700;line-height:1.3;color:#3f6246}
+.recognition #imitation-confidence{font-size:11px;color:#6e7e5c;min-height:14px}.recognition #imitation-match{font-size:11px;line-height:1.4;color:#77816b}
+.imitation-controls{display:grid;grid-template-columns:1fr 1fr;gap:7px}.imitation-controls button{font-size:13px;padding:8px;white-space:normal}
+.lesson-footer{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;min-height:44px}
+#status{margin:0;font-size:12px;line-height:1.5;color:#78816d;max-height:36px;overflow:auto}.lesson-footer #silence{width:auto;min-width:150px;background:#f7eee4;border-color:#ddc6b4;color:#886952;min-height:44px;padding:9px 13px}
+.mask-settings summary{list-style:none;cursor:pointer;border:1px solid #d6dfce;border-radius:11px;padding:10px 14px;min-height:44px;font-size:13px;background:#fffdf7}
+.mask-settings summary::-webkit-details-marker{display:none}.mask-settings[open] summary{background:#e9efdd}
+.mask-settings .screen-details-panel{position:fixed;left:28px;bottom:78px;top:auto;right:auto;width:min(410px,calc(100vw - 56px));max-height:calc(100dvh - 200px);overflow:auto;overscroll-behavior:contain;z-index:90;padding:18px;background:#fffdf5;border:1px solid #cfdac2;border-radius:17px;box-shadow:0 16px 48px #40502b2b}
+.stage-top{margin-bottom:12px}.strength>span{display:block;font-size:13px;color:#78856b;margin-bottom:7px}.strength>div,.alternatives{display:flex;gap:6px}.strength button,.alternatives button{flex:1;font-size:12px;padding:8px}.strength button[aria-pressed=true]{background:#527652;color:#fff}
+.expression-detail,.privacy{font-size:12px;line-height:1.6;color:#7a846b}.alternatives{margin:12px 0}#describe-form label{display:block;font-size:12px;margin:10px 0 6px}.input-row{display:flex;gap:6px;flex-wrap:wrap}.input-row input{width:100%;border:1px solid #ccd8c4;border-radius:10px;padding:10px;min-width:0}.input-row button{font-size:12px;flex:1}#finish{margin-top:12px;width:100%;font-size:13px}
+.buddy-touch #mask{animation:sprout-touch 620ms ease-out 1}.buddy-nod #mask{animation:sprout-nod 560ms ease-out 1}.buddy-celebrate #mask{animation:sprout-celebrate 780ms ease-out 1}
+@keyframes sprout-touch{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-10px) rotate(-3deg)}65%{transform:translateY(2px) rotate(2deg)}}
+@keyframes sprout-nod{0%,100%{transform:rotate(0)}40%{transform:rotate(3deg)}75%{transform:rotate(-2deg)}}
+@keyframes sprout-celebrate{0%,100%{transform:translateY(0)}30%{transform:translateY(-12px) rotate(-3deg)}70%{transform:translateY(-5px) rotate(2deg)}}
+@media(prefers-reduced-motion:reduce){.portrait #mask{animation:none!important;transform:none!important}}
+@media(min-width:760px) and (min-aspect-ratio:4/3){
+  body.theme-page.theme-masks.landscape-app main.masks-live-main{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.08fr);grid-template-rows:minmax(0,1fr) auto;gap:14px;padding:16px 24px;max-width:1920px}
+  body.theme-page.theme-masks.landscape-app .stage.mask-live-stage{grid-template-rows:auto minmax(0,1fr) auto auto auto;gap:8px;padding:16px}
+  body.theme-page.theme-masks.landscape-app .lesson-card{border-radius:22px}
+  body.theme-page.theme-masks.landscape-app .stage.mask-live-stage h1{font-size:inherit;margin:0}
+  body.theme-page.theme-masks.landscape-app .stage.mask-live-stage .portrait{height:100%;max-width:none;max-height:none;margin:0}
+  body.theme-page.theme-masks.landscape-app .play{grid-template-rows:auto minmax(0,1fr);gap:12px;padding:16px}
+  body.theme-page.theme-masks.landscape-app .response{background:#f2f2e7;border:0;border-radius:12px;padding:10px 12px}
+  body.theme-page.theme-masks.landscape-app #intro,body.theme-page.theme-masks.landscape-app #game{grid-area:auto}
+  body.theme-page.theme-masks.landscape-app .choices .choice{min-height:44px}
+  body.theme-page.theme-masks.landscape-app .choices .choice svg{width:clamp(32px,4vw,64px);height:clamp(30px,3.5vw,56px)}
+  body.theme-page.theme-masks.landscape-app .round-actions{grid-template-columns:minmax(0,1fr) auto}
+  body.theme-page.theme-masks.landscape-app .mask-settings .screen-details-panel{top:auto;right:auto;left:24px;bottom:78px;max-height:calc(100dvh - 200px)}
+  body.theme-page.theme-masks.landscape-app #silence{width:auto}body.theme-page.theme-masks.landscape-app #status{max-height:36px}
+}
+@media(min-width:760px) and (max-height:600px){
+  body.theme-page.theme-masks.landscape-app main.masks-live-main{padding:8px 14px;gap:8px}
+  body.theme-page.theme-masks.landscape-app .lesson-card,body.theme-page.theme-masks.landscape-app .stage.mask-live-stage{padding:10px;gap:6px;border-radius:15px}
+  body.theme-page.theme-masks .lesson-heading{font-size:15px}
+  body.theme-page.theme-masks.landscape-app .imitation-frame{min-height:75px}
+  .lesson-heading{font-size:15px}.step-number{width:21px;height:21px;font-size:12px;margin-right:2px;vertical-align:1px}#round,.optional-label{font-size:9px}
+  .theme-page.theme-masks .stage .buddy-reaction{display:none}.theme-page.theme-masks .stage #mask-caption{font-size:10px}.face-cues>div{padding:5px 2px;border-radius:7px}.face-cues dt{font-size:9px}.face-cues dd{font-size:10px;margin-top:1px}
+  .theme-page.theme-masks .choices{gap:5px}.theme-page.theme-masks .choices .choice{font-size:13px;padding:2px;min-height:44px}.theme-page.theme-masks .choices .choice svg{width:32px;height:28px}
+  body.theme-page.theme-masks.landscape-app .choices{grid-template-columns:repeat(3,minmax(0,1fr))}
+  body.theme-page.theme-masks.landscape-app .choices .choice{font-size:11px;gap:0}
+  body.theme-page.theme-masks.landscape-app .choices .choice svg{width:25px;height:24px}
+  .theme-page.theme-masks #intro{gap:5px}.theme-page.theme-masks #intro p{font-size:10px}.question{font-size:10px;margin-bottom:5px}
+  .response{padding:7px 9px;min-height:46px;margin-top:6px}.response .eyebrow{font-size:9px}.response p{font-size:12px;line-height:1.5;margin-top:1px}
+  body.theme-page.theme-masks.landscape-app .response{padding:7px 9px}
+  .theme-page.theme-masks .play[data-phase=inviting] .response{max-height:48px;overflow:auto}
+  .round-actions button,.imitation-controls button{font-size:11px;padding:6px;min-height:40px}.theme-page.theme-masks #game{gap:5px}
+  .recognition{padding:7px 9px;min-height:77px}.recognition .eyebrow{font-size:9px}.recognition #imitation-estimate{font-size:17px}.recognition #imitation-confidence{font-size:9px;min-height:11px}.recognition #imitation-match{font-size:9px}
+  .imitation-camera #imitation-state{font-size:9px;min-height:12px;line-height:12px}.imitation-local{font-size:8px;top:5px;left:5px;padding:3px 5px}#imitation-placeholder{font-size:11px}
+  .lesson-footer{gap:8px}.lesson-footer #silence{min-width:127px;font-size:11px}.mask-settings summary{font-size:11px;padding:10px}#status{font-size:10px}
+  body.theme-page.theme-masks.landscape-app .mask-settings .screen-details-panel{left:14px;bottom:64px;max-height:calc(100dvh - 180px)}
+}
+@media(max-width:759px),(max-aspect-ratio:4/3){
+  .masks-live-main{grid-template-columns:1fr;padding:14px;gap:12px}.lesson-card{min-height:340px}.stage.mask-live-stage{height:450px}.imitation-camera.lesson-card{height:440px}
+  .lesson-footer{position:sticky;bottom:0;background:#f6f4ed;padding:9px 0;gap:7px}.lesson-footer #status{max-height:44px;font-size:10px}.lesson-footer #silence{min-width:0;font-size:11px}
+  .mask-settings .screen-details-panel{left:14px;bottom:70px;width:calc(100vw - 28px)}header{padding:10px 14px;font-size:13px}
+}
+/* Let the six learning choices use the middle card, not an intrinsic 44px strip.
+   Scope the question layout to inviting; feedback keeps its readable reply. */
+@media(min-width:760px) and (min-aspect-ratio:4/3){
+  body.theme-page.theme-masks.landscape-app .play #emotion-preview,
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] #choices{
+    height:100%;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));
+    align-content:stretch;gap:clamp(8px,1.2vh,14px);scrollbar-gutter:auto;overflow:visible;
+  }
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .game-scroll{
+    display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;overflow:hidden;padding-right:0;
+  }
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .question{margin:0}
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .response{
+    min-height:0;max-height:80px;margin:0;padding:8px 12px;overflow:auto;
+  }
+  body.theme-page.theme-masks.landscape-app .play .choices .choice{
+    flex-direction:column;gap:3px;min-height:44px;padding:clamp(4px,.55vh,8px);
+    font-size:clamp(18px,1.65vw,28px);line-height:1.2;border-radius:16px;
+  }
+  body.theme-page.theme-masks.landscape-app .play .choices .choice svg{
+    width:clamp(60px,7vw,120px);height:clamp(52px,7.8vh,105px);max-height:calc(100% - 30px);
+    max-width:100%;min-height:0;flex:0 1 auto;
+  }
+  body.theme-page.theme-masks.landscape-app .play .choice span{flex:none;white-space:nowrap}
+}
+@media(min-width:760px) and (min-aspect-ratio:4/3) and (max-height:600px){
+  body.theme-page.theme-masks.landscape-app .play #emotion-preview,
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] #choices{
+    grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:6px;
+  }
+  body.theme-page.theme-masks.landscape-app .play .choices .choice{
+    padding:4px;gap:1px;font-size:14px;border-radius:11px;
+  }
+  body.theme-page.theme-masks.landscape-app .play .choices .choice svg{
+    width:44px;height:38px;max-height:calc(100% - 20px);
+  }
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .game-scroll{grid-template-rows:minmax(0,1fr) auto;gap:5px}
+  /* The card heading already asks this question; recover its duplicate line
+     on short screens so the actual options retain recognisable faces. */
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .question{display:none}
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .choice{padding:2px}
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .response{
+    padding:5px 8px;max-height:36px;
+  }
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .response .eyebrow{display:none}
+  body.theme-page.theme-masks.landscape-app .play[data-phase=inviting] .response p{margin:0}
+}

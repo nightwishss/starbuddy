@@ -1,0 +1,21 @@
+[Unit]
+Description=VENTUNO Q Phone HTTPS Gateway
+After=network-online.target vq-media.service vq-runtime.service vq-local-agent.service vq-vision-runner.service vq-display.service vq-telemetry.service
+Wants=network-online.target vq-media.service vq-local-agent.service vq-vision-runner.service vq-display.service vq-telemetry.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+ExecStart=/usr/bin/python3 -m gateway.phone.server --cert %h/.config/vq-phone-gateway/server.crt --key %h/.config/vq-phone-gateway/server.key
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.hermes %h/.cache %h/.local/state/vq-phone-gateway /run/user/1000
+Environment=PYTHONDONTWRITEBYTECODE=1
+
+[Install]
+WantedBy=default.target

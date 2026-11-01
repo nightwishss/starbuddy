@@ -1,0 +1,20 @@
+[Unit]
+Description=VENTUNO Q Hermes-to-Genie protocol adapter
+After=vq-local-llm.service
+Wants=vq-local-llm.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 -m gateway.llm.adapter
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+
+[Install]
+WantedBy=default.target

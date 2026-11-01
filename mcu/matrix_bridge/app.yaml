@@ -1,0 +1,5 @@
+name: VQ Matrix Bridge
+description: Validated Linux-to-MCU bridge for the onboard 8x13 LED matrix.
+ports: []
+bricks: []
+icon: 🟦

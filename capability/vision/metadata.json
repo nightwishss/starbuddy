@@ -1,0 +1,35 @@
+{
+  "capabilities": [
+    {
+      "name": "vision.detect_objects",
+      "version": "1.1.0",
+      "type": "query",
+      "description": "使用板端QNN NPU模型检测已授权临时图片中的COCO物体。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "media_id": {"type": "string"},
+          "media_owner": {"type": "string", "pattern": "^[A-Za-z0-9_.:-]{1,256}$"},
+          "confidence": {"type": "number", "minimum": 0.3, "maximum": 1.0}
+        },
+        "required": ["media_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "detections": {"type": "array", "items": {"type": "object"}},
+          "count": {"type": "integer"},
+          "model": {"type": "string"},
+          "backend": {"type": "string"},
+          "timing": {"type": "object"}
+        },
+        "required": ["detections", "count", "model", "backend", "timing"]
+      },
+      "permissions": ["ai.vision.execute"],
+      "timeout_ms": 10000,
+      "expose_to_agent": false,
+      "status": "active"
+    }
+  ]
+}

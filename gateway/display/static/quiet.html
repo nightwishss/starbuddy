@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StarBuddy · 晚安与电台</title><link rel="stylesheet" href="/quiet.css"><script src="/mode.js" defer></script><script src="/quiet.js" defer></script><link rel="stylesheet" href="/mode.css"><link rel="stylesheet" href="/theme.css"></head>
+<body class="theme-page theme-quiet landscape-app">
+<svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+<symbol id="moon" viewBox="0 0 100 100"><path d="M70 12a39 39 0 1 0 18 64A36 36 0 0 1 70 12Z" fill="currentColor"/><path d="m83 20 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" fill="currentColor"/></symbol>
+<symbol id="leaf" viewBox="0 0 100 100"><path d="M24 73C-2 15 64 18 85 11c5 44-17 78-61 62Z" fill="currentColor"/><path d="m17 89 48-53" stroke="#142b32" stroke-width="5" stroke-linecap="round"/></symbol>
+<symbol id="star" viewBox="0 0 100 100"><path d="m50 7 13 27 30 5-22 22 5 31-26-15-26 15 5-31L7 39l30-5Z" fill="currentColor"/></symbol>
+<symbol id="shell" viewBox="0 0 100 100"><path d="M15 74h60q15 0 15-13v-9M81 51l-5-11m14 12 5-12" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><circle cx="44" cy="48" r="29" fill="currentColor"/><path d="M35 66c-25-24 12-44 24-24 10 18-17 25-18 10" fill="none" stroke="#142b32" stroke-width="5"/></symbol>
+</defs></svg>
+<header><a id="back" href="/">← 返回星伴</a><span>STARBUDDY <small>轻轻听</small></span><button id="refresh" type="button">刷新状态</button></header>
+<main>
+  <section class="intro"><div><p class="eyebrow">不赶时间，也没有标准答案</p><h1>轻轻听一会儿</h1><p>选一个小节目，想停就停。</p></div><svg class="moon" aria-hidden="true"><use href="#moon"/></svg></section>
+  <nav aria-label="节目分类"><button id="bedtime" type="button" aria-pressed="true">☾ 晚安故事</button><button id="radio" type="button" aria-pressed="false">♫ 小小电台</button></nav>
+  <section id="catalogue" class="catalogue screen-scroll" aria-label="本地节目"></section>
+  <section class="player" aria-label="播放控制">
+    <div class="now"><div><small id="progress">选一个节目开始</small><h2 id="title">月亮的小口袋</h2></div></div>
+    <p id="transcript" class="transcript screen-scroll">这里会显示正在朗读的小段文字。</p>
+    <div class="controls"><button id="play" type="button" class="primary">开始听</button><button id="pause" type="button" disabled>暂停 / 静音</button><button id="resume" type="button" disabled>从本段继续</button><button id="next" type="button" disabled>下一段</button><button id="stop" type="button" disabled>停止</button></div>
+    <p id="status" role="status" aria-live="polite">正在连接本地播放服务…</p>
+    <details class="screen-details quiet-settings"><summary>音量、语速与定时播放</summary><div class="screen-details-panel">
+      <div class="player-settings"><label>本次音量 <select id="volume"><option value="25">轻声 25%</option><option value="40" selected>柔和 40%</option><option value="60">清楚 60%</option></select></label>
+      <label>本次语速 <select id="speed"><option value="1">正常 1.0×</option><option value="0.8" selected>慢一点 0.8×</option><option value="0.6">轻轻慢读 0.6×</option></select></label></div>
+      <h3>定时开始这个节目</h3>
+      <div class="controls"><label>什么时候 <select id="delay"><option value="60">1 分钟后（测试）</option><option value="600">10 分钟后</option><option value="1800">30 分钟后</option><option value="at">指定时间</option></select></label>
+      <input id="schedule-time" type="datetime-local" aria-label="本机时间，未来24小时内" hidden>
+      <button id="schedule-create" type="button">预约播放</button><button id="schedule-cancel" type="button" disabled>取消预约</button></div>
+      <p id="schedule-status" role="status">没有待播预约。</p>
+      <small>一次只预约一个。离开页面仍有效；到点若正在聊天会跳过，不补播。最长预约24小时内，迟到超过1分钟不播放。</small>
+      <footer>本地原创文本 · 不调用聊天模型 · 不保存收听历史。<br>晚安仅降低页面亮度；慢速保留音高，暂停后从本段开头续播。</footer>
+    </div></details>
+  </section>
+</main></body></html>

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4eee3"><title>StarBuddy 星伴 · 体验页</title><link rel="stylesheet" href="/starbuddy.css"><link rel="stylesheet" href="/starbuddy-voice.css"></head>
+<body><main class="stage">
+  <header><a href="/" aria-label="返回控制台">‹</a><div><strong>STAR BUDDY</strong><span>星伴 · 体验原型 v0</span></div><i id="connection">本地 AI</i></header>
+  <section class="companion" aria-live="polite">
+    <button id="face" class="face idle" aria-label="轻触星伴的脸">
+      <span class="shine"></span><span class="eye left"></span><span class="eye right"></span><span class="cheek left"></span><span class="cheek right"></span><span class="mouth"></span>
+    </button>
+    <p id="mood">我在这里。今天想和我聊点什么？</p>
+    <span id="state" class="state">安静陪伴中</span>
+    <div class="voice-controls"><button id="board-mic" type="button">使用板载 Mic</button><button id="observe" type="button">环境看一眼</button><button id="monitor" type="button" aria-pressed="false">持续观察：关</button><button id="speaker" type="button" aria-pressed="false">声音：手机</button><button id="replay" type="button" hidden>手机再听一次</button></div>
+  </section>
+  <section class="moments" aria-label="快速互动">
+    <button data-prompt="我今天有一点难过，你可以陪我一下吗？" data-mood="gentle">今天有点难过</button>
+    <button data-prompt="我们一起编一个很短、很温暖的星星故事吧。先由你说第一句。" data-mood="happy">一起编故事</button>
+    <button data-prompt="我想要一个远程拥抱，请用一句温暖的话回应我。" data-mood="love">给我一个抱抱</button>
+    <button data-prompt="检查你现在的板卡状态，用孩子能听懂的一句话告诉我。" data-mood="thinking">看看你还好吗</button>
+  </section>
+  <form id="talk"><label for="message">对星伴说</label><div><input id="message" maxlength="800" autocomplete="off" placeholder="比如：今天学校发生了一件事…"><button id="mic" type="button" aria-label="开始录音">●</button><button id="send" aria-label="发送">↑</button></div></form>
+  <p class="notice">AI、语音识别、语音合成与视觉均在板端运行；可临时使用手机麦克风采集，并将回复切换到显示器扬声器</p>
+</main><script src="/starbuddy.js"></script></body></html>

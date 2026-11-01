@@ -1,0 +1,92 @@
+{
+  "capabilities": [
+    {
+      "name": "gpio.list_chips",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "枚举全部 gpiochip (名称/标签/线数)。MPU 侧 SoC pinctrl 在 gpiochip2/3。",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "chips": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string"},
+                "label": {"type": "string"},
+                "num_lines": {"type": "integer"}
+              }
+            }
+          },
+          "count": {"type": "integer"}
+        },
+        "required": ["chips", "count"]
+      },
+      "permissions": ["device.gpio.read"],
+      "timeout_ms": 2000,
+      "implementation": "capability.gpio.impl.list_chips",
+      "status": "active"
+    },
+    {
+      "name": "gpio.list_lines",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "列举某 chip 的全部 line (含 used/unused 标记)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "chip": {"type": "string"}
+        },
+        "required": ["chip"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "chip": {"type": "string"},
+          "count": {"type": "integer"},
+          "lines": {"type": "array", "items": {"type": "string"}}
+        },
+        "required": ["chip", "count", "lines"]
+      },
+      "permissions": ["device.gpio.read"],
+      "timeout_ms": 2000,
+      "implementation": "capability.gpio.impl.list_lines",
+      "status": "active"
+    },
+    {
+      "name": "gpio.read",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "读某 chip 某 line 的电平 (只读; 输出写未开放, 需确认安全引脚)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "chip": {"type": "string"},
+          "offset": {"type": "integer", "minimum": 0}
+        },
+        "required": ["chip", "offset"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "chip": {"type": "string"},
+          "offset": {"type": "integer"},
+          "value": {"type": "integer"}
+        },
+        "required": ["chip", "offset"]
+      },
+      "permissions": ["device.gpio.read"],
+      "timeout_ms": 2000,
+      "implementation": "capability.gpio.impl.read",
+      "status": "active"
+    }
+  ]
+}

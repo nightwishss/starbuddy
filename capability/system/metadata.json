@@ -1,0 +1,75 @@
+{
+  "capabilities": [
+    {
+      "name": "system.status",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "读取系统状态: 负载/CPU%/内存/磁盘/温度/运行时长 (纯只读 /proc + /sys)。",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "loadavg": {"type": "array", "items": {"type": "number"}},
+          "cpu_percent": {"type": "number"},
+          "cpu_count": {"type": "integer"},
+          "mem": {
+            "type": "object",
+            "properties": {
+              "total_kb": {"type": "integer"},
+              "available_kb": {"type": "integer"},
+              "used_kb": {"type": "integer"},
+              "percent": {"type": "number"}
+            }
+          },
+          "disk": {
+            "type": "object",
+            "properties": {
+              "total_gb": {"type": "number"},
+              "used_gb": {"type": "number"},
+              "free_gb": {"type": "number"},
+              "percent": {"type": "number"}
+            }
+          },
+          "uptime_seconds": {"type": "integer"},
+          "boot_time": {"type": "integer"},
+          "temp_max_c": {"type": "number"}
+        },
+        "required": ["loadavg", "cpu_count", "uptime_seconds", "boot_time"]
+      },
+      "permissions": ["service.system.read"],
+      "timeout_ms": 2000,
+      "implementation": "capability.system.impl.status",
+      "status": "active"
+    },
+    {
+      "name": "system.info",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "读取系统身份信息: 主机名/OS/架构/内核/Python 版本。",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "hostname": {"type": "string"},
+          "system": {"type": "string"},
+          "machine": {"type": "string"},
+          "kernel": {"type": "string"},
+          "python": {"type": "string"}
+        },
+        "required": ["hostname", "system", "machine", "kernel"]
+      },
+      "permissions": ["service.system.read"],
+      "timeout_ms": 1000,
+      "implementation": "capability.system.impl.info",
+      "status": "active"
+    }
+  ]
+}

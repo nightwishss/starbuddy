@@ -1,0 +1,110 @@
+{
+  "capabilities": [
+    {
+      "name": "led.set_color",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "设置 4 颗板载 RGB LED 的某一颜色通道亮度 (0-255)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "color": {"type": "string", "enum": ["red", "green", "blue"]},
+          "brightness": {"type": "integer", "minimum": 0, "maximum": 255}
+        },
+        "required": ["color", "brightness"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "color": {"type": "string"},
+          "brightness": {"type": "integer"},
+          "channels": {"type": "array", "items": {"type": "string"}},
+          "count": {"type": "integer"}
+        },
+        "required": ["channels", "count"]
+      },
+      "permissions": ["device.led.write"],
+      "timeout_ms": 1000,
+      "implementation": "capability.led.impl.set_color",
+      "status": "active"
+    },
+    {
+      "name": "led.set_rgb",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "把 4 颗板载 RGB LED 全部设为同一 RGB 颜色。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "red": {"type": "integer", "minimum": 0, "maximum": 255},
+          "green": {"type": "integer", "minimum": 0, "maximum": 255},
+          "blue": {"type": "integer", "minimum": 0, "maximum": 255}
+        },
+        "required": ["red", "green", "blue"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "channels": {"type": "array", "items": {"type": "string"}},
+          "count": {"type": "integer"}
+        },
+        "required": ["channels", "count"]
+      },
+      "permissions": ["device.led.write"],
+      "timeout_ms": 1000,
+      "implementation": "capability.led.impl.set_rgb",
+      "status": "active"
+    },
+    {
+      "name": "led.off",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "熄灭全部板载 RGB LED。",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "channels": {"type": "array", "items": {"type": "string"}},
+          "count": {"type": "integer"},
+          "all_off": {"type": "boolean"}
+        },
+        "required": ["channels", "count", "all_off"]
+      },
+      "permissions": ["device.led.write"],
+      "timeout_ms": 1000,
+      "implementation": "capability.led.impl.off",
+      "status": "active"
+    },
+    {
+      "name": "led.list",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "列举全部 LED 通道及当前亮度 (Query 型能力示例)。",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "channels": {"type": "array", "items": {"type": "string"}},
+          "count": {"type": "integer"},
+          "max_brightness": {"type": "integer"},
+          "brightness": {"type": "object"}
+        },
+        "required": ["channels", "count", "max_brightness"]
+      },
+      "permissions": ["device.led.read"],
+      "timeout_ms": 1000,
+      "implementation": "capability.led.impl.list_channels",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+# Merge these keys into ~/.hermes/config.yaml on the VQ board.
+# An explicit platform list leaves Hermes with this MCP and no native shell,
+# process, file, browser, code-execution, delegation, or Docker tools. The MCP
+# dynamically exposes every capability already authorized by VQ Runtime.
+platform_toolsets:
+  cli:
+    - vq_runtime
+    - skills
+    - memory
+
+mcp_servers:
+  vq_runtime:
+    command: /home/arduino/.local/share/hermes-agent/venv/bin/python
+    args:
+      - /home/arduino/vq-platform/integrations/hermes/server.py
+    env:
+      PYTHONPATH: /home/arduino/vq-platform
+      VQ_RUNTIME_SOCKET: /run/user/1000/vq-runtime.sock
+    enabled: true
+
+agent:
+  disabled_toolsets:
+    - terminal
+    - file
+    - code_execution
+    - delegation
+    - browser
+    - cronjob

@@ -1,0 +1,540 @@
+{
+  "capabilities": [
+    {
+      "name": "audio.list_devices",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "列出可用 audio backend 与 ALSA 声卡设备。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "backends": {"type": "array", "items": {"type": "string"}},
+          "devices": {"type": "array", "items": {"type": "string"}},
+          "count": {"type": "integer"}
+        },
+        "required": ["backends", "devices", "count"]
+      },
+      "permissions": ["device.audio.read"],
+      "timeout_ms": 1000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.impl.list_devices",
+      "status": "active"
+    },
+    {
+      "name": "audio.get_info",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "查询 audio 栈信息 (PipeWire 服务器 / 格式 / loopback 可用性)。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "backend": {"type": "string"},
+          "server": {"type": "string"},
+          "formats": {"type": "array", "items": {"type": "string"}},
+          "loopback": {"type": "string"}
+        },
+        "required": ["backend", "formats"]
+      },
+      "permissions": ["device.audio.read"],
+      "timeout_ms": 1000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.impl.get_info",
+      "status": "active"
+    },
+    {
+      "name": "audio.open_playback",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "打开 playback 流 (File backend: 读取源 WAV), 返回 stream_id 与流信息。",
+      "input": {
+        "type": "object",
+        "properties": {"path": {"type": "string"}},
+        "required": ["path"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "stream_id": {"type": "string"},
+          "path": {"type": "string"},
+          "sample_rate": {"type": "integer"},
+          "channels": {"type": "integer"},
+          "sample_width": {"type": "integer"},
+          "frames": {"type": "integer"},
+          "duration_seconds": {"type": "number"},
+          "position": {"type": "integer"}
+        },
+        "required": ["stream_id", "sample_rate", "channels", "frames"]
+      },
+      "permissions": ["device.audio.read"],
+      "timeout_ms": 2000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.impl.open_playback",
+      "status": "active"
+    },
+    {
+      "name": "audio.play",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "从 playback 流读一段 PCM (samples/position/eof)。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "stream_id": {"type": "string"},
+          "frames": {"type": "integer", "minimum": 1}
+        },
+        "required": ["stream_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "stream_id": {"type": "string"},
+          "samples": {"type": "array", "items": {"type": "integer"}},
+          "frames_read": {"type": "integer"},
+          "position": {"type": "integer"},
+          "eof": {"type": "boolean"}
+        },
+        "required": ["stream_id", "frames_read", "position", "eof"]
+      },
+      "permissions": ["device.audio.read"],
+      "timeout_ms": 3000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.impl.play",
+      "status": "active"
+    },
+    {
+      "name": "audio.close_playback",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "关闭 playback 流 (释放资源)。",
+      "input": {
+        "type": "object",
+        "properties": {"stream_id": {"type": "string"}},
+        "required": ["stream_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "stream_id": {"type": "string"},
+          "closed": {"type": "boolean"}
+        },
+        "required": ["stream_id", "closed"]
+      },
+      "permissions": ["device.audio.read"],
+      "timeout_ms": 2000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.impl.close_playback",
+      "status": "active"
+    },
+    {
+      "name": "audio.open_capture",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "打开 capture 流 (File backend: 写目标 WAV), 返回 stream_id。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string"},
+          "sample_rate": {"type": "integer", "minimum": 8000, "maximum": 192000},
+          "channels": {"type": "integer", "minimum": 1, "maximum": 8},
+          "sample_width": {"type": "integer", "minimum": 1, "maximum": 4}
+        },
+        "required": ["path"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "stream_id": {"type": "string"},
+          "path": {"type": "string"},
+          "sample_rate": {"type": "integer"},
+          "channels": {"type": "integer"},
+          "sample_width": {"type": "integer"}
+        },
+        "required": ["stream_id", "sample_rate", "channels", "sample_width"]
+      },
+      "permissions": ["device.audio.write"],
+      "timeout_ms": 2000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.impl.open_capture",
+      "status": "active"
+    },
+    {
+      "name": "audio.write",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "向 capture 流写入一段 PCM 采样。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "stream_id": {"type": "string"},
+          "samples": {"type": "array", "items": {"type": "integer"}}
+        },
+        "required": ["stream_id", "samples"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "stream_id": {"type": "string"},
+          "frames_written": {"type": "integer"}
+        },
+        "required": ["stream_id", "frames_written"]
+      },
+      "permissions": ["device.audio.write"],
+      "timeout_ms": 3000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.impl.write",
+      "status": "active"
+    },
+    {
+      "name": "audio.close_capture",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "关闭 capture 流 (finalize WAV)。",
+      "input": {
+        "type": "object",
+        "properties": {"stream_id": {"type": "string"}},
+        "required": ["stream_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "stream_id": {"type": "string"},
+          "closed": {"type": "boolean"},
+          "path": {"type": "string"}
+        },
+        "required": ["stream_id", "closed"]
+      },
+      "permissions": ["device.audio.write"],
+      "timeout_ms": 2000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.impl.close_capture",
+      "status": "active"
+    },
+    {
+      "name": "audio.capture_clip",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "从逻辑麦克风角色采集有界WAV并提交为共享Media对象。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "media_owner": {"type": "string"},
+          "role": {"type": "string"},
+          "duration_ms": {"type": "integer", "minimum": 500, "maximum": 15000},
+          "sample_rate": {"type": "integer", "enum": [16000, 48000]},
+          "channels": {"type": "integer", "enum": [1, 2]},
+          "volume_percent": {"type": "integer", "minimum": 0, "maximum": 100}
+        },
+        "required": ["media_owner"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "media_id": {"type": "string"},
+          "kind": {"type": "string"},
+          "mime_type": {"type": "string"},
+          "size": {"type": "integer"},
+          "created_at": {"type": "number"},
+          "expires_at": {"type": "number"},
+          "role": {"type": "string"},
+          "device_id": {"type": "string"},
+          "volume_percent": {"type": "integer"},
+          "signal": {"type": "object"}
+        },
+        "required": ["media_id", "kind", "mime_type", "size", "expires_at", "role", "device_id", "volume_percent", "signal"]
+      },
+      "permissions": ["device.audio.capture"],
+      "timeout_ms": 20000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.capture_clip",
+      "status": "active"
+    },
+    {
+      "name": "audio.capture_turn",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "从逻辑麦克风自适应检测一次自然语音边界并提交共享Media对象。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "media_owner": {"type": "string"},
+          "role": {"type": "string"},
+          "sample_rate": {"type": "integer", "enum": [16000, 48000]},
+          "channels": {"type": "integer", "enum": [1, 2]},
+          "volume_percent": {"type": "integer", "minimum": 0, "maximum": 100},
+          "max_wait_ms": {"type": "integer", "minimum": 1000, "maximum": 15000},
+          "max_turn_ms": {"type": "integer", "minimum": 1000, "maximum": 20000},
+          "end_silence_ms": {"type": "integer", "minimum": 300, "maximum": 2000},
+          "pre_roll_ms": {"type": "integer", "minimum": 100, "maximum": 1000},
+          "calibration_ms": {"type": "integer", "minimum": 200, "maximum": 1000}
+        },
+        "required": ["media_owner"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "detected": {"type": "boolean"},
+          "media_id": {"type": "string"},
+          "kind": {"type": "string"},
+          "mime_type": {"type": "string"},
+          "size": {"type": "integer"},
+          "created_at": {"type": "number"},
+          "expires_at": {"type": "number"},
+          "role": {"type": "string"},
+          "device_id": {"type": "string"},
+          "volume_percent": {"type": "integer"},
+          "turn": {"type": "object"},
+          "signal": {"type": "object"}
+        },
+        "required": ["detected", "role", "device_id", "volume_percent", "turn"]
+      },
+      "permissions": ["device.audio.capture"],
+      "timeout_ms": 30000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.capture_turn",
+      "status": "active"
+    },
+    {
+      "name": "audio.start_playback",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "在逻辑扬声器角色异步播放同owner共享WAV，返回可停止的playback_id。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "media_id": {"type": "string"},
+          "media_owner": {"type": "string"},
+          "role": {"type": "string"},
+          "volume_percent": {"type": "integer", "minimum": 0, "maximum": 100}
+        },
+        "required": ["media_id", "media_owner"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "playback_id": {"type": "string"},
+          "media_id": {"type": "string"},
+          "role": {"type": "string"},
+          "device_id": {"type": "string"},
+          "state": {"type": "string", "enum": ["playing", "completed", "failed", "stopped"]},
+          "duration_seconds": {"type": "number"},
+          "elapsed_seconds": {"type": "number"},
+          "returncode": {"type": "integer"}
+        },
+        "required": ["playback_id", "media_id", "role", "device_id", "state", "duration_seconds", "elapsed_seconds"]
+      },
+      "permissions": ["device.audio.playback"],
+      "timeout_ms": 5000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.start_playback",
+      "status": "active"
+    },
+    {
+      "name": "audio.start_stream_playback",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "首段同owner PCM WAV启动唯一PipeWire连续流；ACK已持有媒体FD，playing仅表示软件状态。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "media_id": {"type": "string"},
+          "media_owner": {"type": "string"},
+          "stream_key": {"type": "string", "minLength": 1, "maxLength": 256},
+          "resolve_only": {"type": "boolean"},
+          "role": {"type": "string"},
+          "volume_percent": {"type": "integer", "minimum": 0, "maximum": 100}
+        },
+        "required": ["media_id", "media_owner", "stream_key"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "playback_id": {"type": "string"},
+          "stream_key": {"type": "string"},
+          "media_id": {"type": "string"},
+          "role": {"type": "string"},
+          "device_id": {"type": "string"},
+          "state": {"type": "string", "enum": ["playing", "completed", "failed", "stopped"]},
+          "duration_seconds": {"type": "number"},
+          "elapsed_seconds": {"type": "number"},
+          "lead_in_ms": {"type": "integer"},
+          "accepted_segments": {"type": "integer", "minimum": 1, "maximum": 16},
+          "pending_segments": {"type": "integer", "minimum": 0, "maximum": 2},
+          "producer_wait_ms": {"type": "number"},
+          "input_finished": {"type": "boolean"},
+          "returncode": {"type": "integer"},
+          "failure_reason": {"type": "string"}
+        },
+        "required": ["playback_id", "media_id", "role", "device_id", "state", "duration_seconds", "elapsed_seconds", "accepted_segments", "pending_segments", "producer_wait_ms", "input_finished"]
+      },
+      "permissions": ["device.audio.playback"],
+      "timeout_ms": 5000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.start_stream_playback",
+      "status": "active"
+    },
+    {
+      "name": "audio.append_stream_playback",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "按序追加同owner同格式WAV；窗口最多两段，容量满250ms返回可重试TIMEOUT，只有已接受序号与同Media可幂等。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "playback_id": {"type": "string"},
+          "media_id": {"type": "string"},
+          "media_owner": {"type": "string"},
+          "segment_index": {"type": "integer", "minimum": 1}
+        },
+        "required": ["playback_id", "media_id", "media_owner", "segment_index"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "playback_id": {"type": "string"},
+          "state": {"type": "string", "enum": ["playing", "completed", "failed", "stopped"]},
+          "accepted_segments": {"type": "integer", "minimum": 1, "maximum": 16},
+          "pending_segments": {"type": "integer", "minimum": 0, "maximum": 2},
+          "producer_wait_ms": {"type": "number"},
+          "input_finished": {"type": "boolean"}
+        },
+        "required": ["playback_id", "state", "accepted_segments", "pending_segments", "producer_wait_ms", "input_finished"]
+      },
+      "permissions": ["device.audio.playback"],
+      "timeout_ms": 5000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.append_stream_playback",
+      "status": "active"
+    },
+    {
+      "name": "audio.finish_stream_playback",
+      "version": "1.0.0",
+      "type": "command",
+      "description": "幂等结束生产输入；只有全部PCM写入、stdin EOF且PipeWire排空成功退出才completed。",
+      "input": {
+        "type": "object",
+        "properties": {
+          "playback_id": {"type": "string"},
+          "media_owner": {"type": "string"}
+        },
+        "required": ["playback_id", "media_owner"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "playback_id": {"type": "string"},
+          "state": {"type": "string", "enum": ["playing", "completed", "failed", "stopped"]},
+          "accepted_segments": {"type": "integer", "minimum": 1, "maximum": 16},
+          "pending_segments": {"type": "integer", "minimum": 0, "maximum": 2},
+          "producer_wait_ms": {"type": "number"},
+          "input_finished": {"type": "boolean"}
+        },
+        "required": ["playback_id", "state", "accepted_segments", "pending_segments", "producer_wait_ms", "input_finished"]
+      },
+      "permissions": ["device.audio.playback"],
+      "timeout_ms": 2000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.finish_stream_playback",
+      "status": "active"
+    },
+    {
+      "name": "audio.playback_status",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "查询实体扬声器播放任务状态。",
+      "input": {
+        "type": "object",
+        "properties": {"playback_id": {"type": "string"}},
+        "required": ["playback_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "playback_id": {"type": "string"},
+          "media_id": {"type": "string"},
+          "role": {"type": "string"},
+          "device_id": {"type": "string"},
+          "state": {"type": "string"},
+          "duration_seconds": {"type": "number"},
+          "elapsed_seconds": {"type": "number"},
+          "returncode": {"type": "integer"}
+        },
+        "required": ["playback_id", "media_id", "role", "device_id", "state", "duration_seconds", "elapsed_seconds"]
+      },
+      "permissions": ["device.audio.playback"],
+      "timeout_ms": 2000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.playback_status",
+      "status": "active"
+    },
+    {
+      "name": "audio.stop_playback",
+      "version": "1.0.0",
+      "type": "stateful",
+      "description": "停止并关闭实体扬声器播放任务。",
+      "input": {
+        "type": "object",
+        "properties": {"playback_id": {"type": "string"}},
+        "required": ["playback_id"],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "playback_id": {"type": "string"},
+          "media_id": {"type": "string"},
+          "role": {"type": "string"},
+          "device_id": {"type": "string"},
+          "state": {"type": "string"},
+          "duration_seconds": {"type": "number"},
+          "elapsed_seconds": {"type": "number"},
+          "returncode": {"type": "integer"}
+        },
+        "required": ["playback_id", "media_id", "role", "device_id", "state", "duration_seconds", "elapsed_seconds"]
+      },
+      "permissions": ["device.audio.playback"],
+      "timeout_ms": 5000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.stop_playback",
+      "status": "active"
+    },
+    {
+      "name": "audio.interaction_status",
+      "version": "1.0.0",
+      "type": "query",
+      "description": "查询当前实体语音的半双工、打断、回声保护、AEC与唤醒策略真实状态。",
+      "input": {"type": "object", "properties": {}, "additionalProperties": false},
+      "output": {
+        "type": "object",
+        "properties": {
+          "mode": {"type": "string", "enum": ["half_duplex"]},
+          "trigger": {"type": "string", "enum": ["explicit"]},
+          "playback_interruption": {"type": "boolean"},
+          "echo_guard_ms": {"type": "integer"},
+          "aec": {"type": "object"},
+          "wake_word": {"type": "object"}
+        },
+        "required": ["mode", "trigger", "playback_interruption", "echo_guard_ms", "aec", "wake_word"]
+      },
+      "permissions": ["device.audio.read"],
+      "timeout_ms": 4000,
+      "expose_to_agent": false,
+      "implementation": "capability.audio.physical.interaction_status",
+      "status": "active"
+    }
+  ]
+}

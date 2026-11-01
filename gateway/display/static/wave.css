@@ -1,0 +1,7 @@
+.wave-panel{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 12px;margin:12px 0;padding:10px 12px;border:1px solid #8caa8c66;border-radius:16px;background:#f0f5e9;color:#34483b;font:14px/1.5 system-ui,sans-serif}
+.wave-panel #wave-toggle{font:inherit;font-weight:650;min-height:44px;padding:9px 15px;border:1px solid #647f64;border-radius:24px;background:#fff;color:#34483b;cursor:pointer;white-space:nowrap;box-shadow:none}
+.wave-panel #wave-toggle[aria-pressed=true]{background:#3e6550;color:white}
+.wave-panel #wave-toggle:focus-visible{outline:3px solid #3559ba;outline-offset:3px}
+.wave-panel #wave-info{margin:0;font:12px/1.6 system-ui,sans-serif;max-width:350px;overflow-wrap:anywhere}
+.wave-panel #wave-toggle:disabled{opacity:.6;cursor:wait}
+@media(max-height:650px){.wave-panel{padding:5px 8px;margin:6px 0;gap:4px 8px}.wave-panel #wave-info{font-size:11px}}

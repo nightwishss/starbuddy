@@ -1,0 +1,22 @@
+[Unit]
+Description=VENTUNO Q loopback HDMI product display state
+After=vq-runtime.service vq-media.service vq-local-llm.service vq-conversation.service vq-camera-stream.service vq-events.service vq-output.service vq-posture.service vq-personal-memory.service vq-perception-context.service
+Wants=vq-runtime.service vq-media.service vq-local-llm.service vq-conversation.service vq-camera-stream.service vq-events.service vq-output.service vq-posture.service vq-personal-memory.service vq-perception-context.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 -m gateway.display.server
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/vq-platform
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=default.target

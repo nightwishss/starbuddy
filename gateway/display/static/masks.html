@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StarBuddy · 表情小课堂</title><link rel="stylesheet" href="/theme.css"><link rel="stylesheet" href="/mode.css"><link rel="stylesheet" href="/masks.css"></head>
+<body class="theme-page theme-masks landscape-app">
+<link rel="stylesheet" href="/wave.css">
+<header><a id="back" href="/">← 返回星伴</a><span>表情小课堂</span><label class="voice-switch"><input id="speak" type="checkbox" checked>芽芽说话</label></header>
+<main class="masks-live-main">
+  <section class="stage mask-live-stage lesson-card" aria-label="第一步，观察芽芽的表情">
+    <div class="lesson-heading"><h1><span class="step-number">1</span> 看看芽芽</h1><span id="round">六种表情</span></div>
+    <button id="mask-touch" class="portrait" type="button" aria-label="轻碰芽芽，让它动一动" aria-describedby="buddy-reaction"><svg id="mask" viewBox="0 0 320 280" role="img" aria-label="小面具"></svg></button>
+    <p id="mask-caption">先看一看，不着急回答。</p>
+    <dl class="face-cues" aria-label="芽芽的表情线索"><div><dt>眉毛</dt><dd id="cue-brows">舒展开</dd></div><div><dt>眼睛</dt><dd id="cue-eyes">弯弯的</dd></div><div><dt>嘴角</dt><dd id="cue-mouth">向上扬</dd></div></dl>
+    <p id="buddy-reaction" class="buddy-reaction" role="status">轻碰芽芽，我会动一动。</p>
+  </section>
+  <section class="play lesson-card" aria-label="第二步，认识表情名字">
+    <h2 class="lesson-heading"><span><span class="step-number">2</span> 这是什么表情？</span></h2>
+    <div id="intro"><p class="intro-copy">先认名字，不需要模仿。</p><div id="emotion-preview" class="choices emotion-preview screen-scroll" role="group" aria-label="静态表情预览，不启动声音或收音"></div><p class="preview-note">可以只看、跳过，或随时休息。</p><button id="start" class="primary" type="button">开始认表情</button></div>
+    <div id="game" hidden>
+      <div class="game-scroll screen-scroll">
+        <p id="question" class="question">给芽芽的表情选个名字</p>
+        <div id="choices" class="choices" aria-label="表情名字"></div>
+        <div class="response" aria-live="polite"><span class="eyebrow">芽芽说</span><p id="answer">准备好就开始。</p></div>
+      </div>
+      <div class="round-actions"><button id="next" class="primary" type="button">下一张 →</button><button id="repeat" type="button">再听一次</button><button id="unsure" type="button">只看，不模仿</button></div>
+    </div>
+  </section>
+  <section class="imitation-camera lesson-card" aria-label="第三步，模仿并看看识别到的表情">
+    <h2 class="lesson-heading"><span><span class="step-number">3</span> 我也试试看</span><span class="optional-label">可以只看</span></h2>
+    <div class="imitation-frame"><img id="imitation-frame" alt="我的本地实时画面" hidden><div id="imitation-placeholder">想看看自己的表情？<br>点下方开启画面</div><span class="imitation-local">本机画面 · 不录制</span><p id="imitation-state" role="status">画面未开启</p></div>
+    <div class="recognition" data-state="off"><span class="eyebrow">识别到的表情</span><p id="imitation-estimate" role="status">等待开启画面</p><p id="imitation-confidence"></p><p id="imitation-match">只是面部外观，不代表真实心情。</p></div>
+    <div class="imitation-controls"><button id="imitation-toggle" type="button" aria-pressed="false">开启我的画面</button><button id="compare" class="primary" type="button" disabled>请芽芽看看</button></div>
+  </section>
+  <footer class="lesson-footer">
+    <details class="screen-details mask-settings"><summary>更多玩法</summary><div class="screen-details-panel">
+    <div class="stage-top"><span class="eyebrow">慢慢观察 · 自由表达</span></div>
+    <div class="strength"><span>表情强度</span><div role="group" aria-label="表情强度">
+      <button type="button" data-level="1" aria-pressed="true">轻轻的</button>
+      <button type="button" data-level="2" aria-pressed="false">明显些</button>
+      <button type="button" data-level="3" aria-pressed="false">更明显</button>
+    </div></div>
+    <p id="expression-detail" class="expression-detail" aria-live="polite">看看眉毛、眼睛和嘴角的变化。</p>
+    <div class="alternatives"><button id="imitated" type="button">我试着模仿了</button></div>
+    <form id="describe-form"><label for="description">也可以用自己的话说说</label><div class="input-row"><input id="description" maxlength="160" placeholder="例如：像刚收到礼物…" autocomplete="off"><button id="send" type="submit">发送</button><button id="voice" type="button">🎙 说说看</button></div></form>
+    <button id="finish" type="button">结束这一轮</button>
+    <p class="privacy">不打分 · 表情不等于真实心情 · 画面不保存；关闭只释放本页画面，不影响其他守护</p>
+    </div></details>
+    <p id="status" role="status">画面和麦克风默认关闭；也可以只点选来玩。</p>
+    <button id="silence" class="stop" type="button">停止声音 / 收音</button>
+  </footer>
+</main>
+<script src="/mode.js"></script><script src="/masks.js"></script>
+<script src="/wave.js"></script></body></html>

@@ -1,0 +1,15 @@
+[Unit]
+Description=VENTUNO Q MCU Matrix Socket Relay
+After=vq-runtime.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/arduino/vq-platform
+ExecStart=/usr/bin/python3 -m gateway.matrix.relay
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=false
+
+[Install]
+WantedBy=default.target

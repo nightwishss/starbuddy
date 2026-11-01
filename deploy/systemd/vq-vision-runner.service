@@ -1,0 +1,14 @@
+[Unit]
+Description=VENTUNO Q QNN Object Detection Runner
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/docker rm -f vq-vision-runner
+ExecStart=/usr/bin/docker run --rm --name vq-vision-runner --network bridge --device /dev/dma_heap/system --device /dev/fastrpc-cdsp -p 127.0.0.1:1337:1337 --log-driver json-file --log-opt max-size=5m --log-opt max-file=2 -v /sys/firmware/devicetree/base/model:/run/device-model:ro -v /usr/share/qcom:/usr/share/qcom:ro ghcr.io/arduino/app-bricks/ei-qnn-models-runner@sha256:3dbe4fee79e4e955321ab29152639c914b3082967980794b4d82043009f0e9da --model-file /models/ootb/ei/yolo-x-nano-qnn.eim --run-http-server 1337 --dont-print-predictions
+ExecStop=/usr/bin/docker stop -t 5 vq-vision-runner
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+
+[Install]
+WantedBy=default.target

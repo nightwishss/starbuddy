@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "profile_id": "ventunoq-development-2026-08",
+  "roles": {
+    "camera.front": {
+      "kind": "camera",
+      "required": false,
+      "selector": {"stable_id_contains": "Sonix_Technology_Co.__Ltd._RGB_CAMERA_SN0008"}
+    },
+    "camera.environment": {
+      "kind": "camera",
+      "required": false,
+      "selector": {"stable_id_contains": "DHZJ-240229-XH_Integrated_Webcam_HD"},
+      "settings": {"source_fps": 30, "preview_fps": 6, "rotation": 180}
+    },
+    "audio.primary_input": {
+      "kind": "audio_input",
+      "required": false,
+      "selector": {"name_contains": "UACDemoV1.0", "transport": "usb"},
+      "settings": {"volume_percent": 75, "muted": false}
+    },
+    "audio.primary_output": {
+      "kind": "audio_output",
+      "required": false,
+      "selector": {"name_contains": "UACDemoV1.0", "transport": "usb"},
+      "settings": {"volume_percent": 100, "muted": false}
+    },
+    "audio.echo_cancelled_input": {
+      "kind": "audio_input",
+      "required": false,
+      "selector": {"stable_id": "vq_echo_cancelled_input"},
+      "settings": {"volume_percent": 100, "muted": false, "fallback_role": "audio.primary_input"}
+    },
+    "audio.echo_reference_output": {
+      "kind": "audio_output",
+      "required": false,
+      "selector": {"stable_id": "vq_echo_reference_output"},
+      "settings": {"volume_percent": 100, "muted": false, "fallback_role": "audio.primary_output"}
+    },
+    "display.primary": {
+      "kind": "display",
+      "required": false,
+      "selector": {"connector": "HDMI-A-1"}
+    },
+    "expression.matrix": {
+      "kind": "matrix",
+      "required": true,
+      "selector": {"stable_id": "matrix:mcu-8x13"}
+    }
+  }
+}

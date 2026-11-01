@@ -1,0 +1,29 @@
+[Unit]
+Description=VENTUNO Q local ephemeral facial-expression cues
+After=vq-camera-stream.service vq-face.service vq-perception-context.service
+Wants=vq-camera-stream.service vq-face.service vq-perception-context.service
+StartLimitIntervalSec=120
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=%h/vq-platform
+Environment=PYTHONPATH=%h/vq-platform
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=OMP_NUM_THREADS=1
+Environment=OPENBLAS_NUM_THREADS=1
+ExecStart=%h/.local/share/vq-pose-lab/venv/bin/python -m affect_cues_service.service --fps 0.5
+Restart=on-failure
+RestartSec=5
+Nice=10
+CPUQuota=50%
+TasksMax=16
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+UMask=0077
+
+[Install]
+WantedBy=default.target

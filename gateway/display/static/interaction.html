@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>StarBuddy · 情境伙伴</title>
+  <link rel="stylesheet" href="/interaction.css">
+</head>
+<body>
+<main class="workspace">
+  <header class="workspace-header">
+    <a class="brand" href="/" aria-label="返回星伴首页">星伴 <span>starbuddy</span></a>
+    <div class="header-trail"><span>语音对话</span><a href="/">回到首页 <span aria-hidden="true">↗</span></a></div>
+  </header>
+
+  <div class="workspace-grid">
+    <section class="companion" aria-label="芽芽伙伴">
+      <span id="connection-status" class="status-pill" role="status"><span class="status-dot" aria-hidden="true"></span><span id="connection-label">正在连接</span></span>
+      <div id="agent-buddy" class="buddy" data-phase="idle" data-mood="curious" aria-hidden="true">
+        <div class="buddy-motion">
+          <img class="expression curious" src="/home-buddy-curious.svg" width="480" height="420" alt="" draggable="false">
+          <img class="expression listening" src="/home-buddy-listening.svg" width="480" height="420" alt="" draggable="false">
+          <img class="expression amused" src="/home-buddy-amused.svg" width="480" height="420" alt="" draggable="false">
+        </div>
+      </div>
+      <h1>想聊什么？我在呢。</h1>
+      <p id="buddy-caption" class="buddy-caption" role="status">告诉我你想做什么，我们一起找下一步。</p>
+      <p class="companion-note">开一次对话，说完我会回应，再接着听。<br>随时点停止，就不再开启下一句。</p>
+      <a class="device-link" href="/">挥手互动 · 坐姿守护 <span aria-hidden="true">↗</span></a>
+      <section id="camera-panel" class="context-camera" aria-label="摄像头和 Fusion 情境">
+        <div class="camera-heading"><strong>摄像头 · Fusion 情境</strong><button id="context-camera-toggle" type="button" aria-pressed="false">开启视觉</button></div>
+        <div class="context-camera-feeds">
+          <figure><img id="context-front" alt="前置摄像头实时预览"><figcaption>前置 · 人脸／表情</figcaption></figure>
+          <figure><img id="context-environment" alt="环境摄像头实时预览"><figcaption>环境 · 物体／坐姿</figcaption></figure>
+        </div>
+        <p id="context-camera-state" role="status">画面未开启；点击后仅在板端显示。</p>
+        <p id="context-camera-facts" role="status">正在读取 Fusion 已有线索…</p>
+      </section>
+    </section>
+
+    <section class="interaction-panel" aria-label="和芽芽一起处理当前情境">
+      <details class="workspace-options"><summary>情境与任务 <span>需要时再展开</span></summary><section class="situation-section" aria-labelledby="workspace-heading">
+        <div class="section-heading"><div><span class="eyebrow">这次一起做</span><h2 id="workspace-heading">把眼前的事，一起做好。</h2></div><button id="workspace-reset" class="text-button" type="button" disabled>结束本次情境</button></div>
+        <div id="goal-panel" class="goal-panel"><span id="goal-kind" class="task-label">一个小目标</span><h3 id="goal-title">先告诉我，你想做什么？</h3><p id="goal-step">可以聊眼前的事，也可以一起计划下一步。</p><p id="goal-missing" class="goal-missing" hidden></p><button id="example-reminder" class="example-button" type="button">试着说：十分钟后提醒我喝水 <span aria-hidden="true">↗</span></button></div>
+        <div class="attention-line"><span>现在关注</span><strong id="attention-label">还没有选定对象</strong><span id="context-status" class="context-status">正在读取情境</span></div>
+        <div id="context-objects" class="context-objects" aria-label="选择当前关注的物体线索"><p class="context-empty">暂时没有可用的物体线索，不会自动开启摄像头。</p></div>
+        <details class="context-details"><summary>情境来源与身份边界</summary><div id="source-states" class="source-states"></div><p id="actor-boundary">说话者与触摸操作者身份尚未证实，不自动关联镜头中的人。</p><p class="snapshot-note">这里展示已有线索快照，不是实时画面，也不证明对象仍在场。</p></details>
+      </section></details>
+
+      <section id="action-panel" class="action-panel" aria-label="提议、确认与执行回执">
+        <div class="action-heading"><span id="action-status" class="action-status" role="status">尚无已提交的动作</span><button id="action-cancel" class="text-button" type="button" hidden>取消这次动作</button></div>
+        <div id="action-draft" class="action-draft" hidden><div><span class="task-label">先核对，再执行</span><p id="action-summary"></p><p id="action-expiry" class="action-expiry"></p></div><button id="action-confirm" class="confirm-button" type="button" disabled>确认预约</button></div>
+        <p id="action-detail" class="action-detail">涉及预约等实际动作，会先展示提议；点确认后才提交。</p>
+        <details id="action-receipt" class="action-receipt" hidden><summary>查看任务回执</summary><dl><div><dt>任务状态</dt><dd id="action-task-state">未确认</dd></div><div><dt>任务编号</dt><dd><code id="action-task-id"></code></dd></div></dl></details>
+      </section>
+
+      <section class="conversation-section" aria-label="本次对话">
+        <div id="conversation" class="conversation" role="log" aria-label="本次对话记录" aria-live="polite" aria-relevant="additions">
+          <div id="conversation-empty" class="conversation-empty"><span class="small-spark" aria-hidden="true">✦</span><p>从你想说的一件事开始。</p><span>点“持续对话”，不必每句再点一次。<br>需要预约或执行任务时，仍会先和你确认。</span></div>
+        </div>
+        <div id="offer-panel" class="offer-panel" hidden><div><span class="offer-label">一个小提议</span><p id="offer-text"></p></div><button id="offer-decline" class="quiet-button" type="button">暂时不用</button></div>
+        <div id="delivery-panel" class="delivery-panel" hidden><span id="delivery-state" role="status"></span><span id="delivery-detail"></span></div>
+        <div id="request-status" class="request-status" role="status" hidden></div>
+        <div class="voice-session-status"><strong id="continuous-voice-state" role="status">持续对话未开启</strong><span id="continuous-voice-detail">只有点开启后才会收音。</span></div>
+        <div class="voice-controls" aria-label="对话控制">
+          <button id="continuous-voice-button" class="continuous-voice-button" type="button" aria-pressed="false" aria-describedby="continuous-voice-detail" disabled>开启持续对话</button>
+          <button id="voice-button" class="voice-button" type="button" aria-describedby="voice-privacy"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M6 10v1a6 6 0 0 0 12 0v-1M12 17v4M9 21h6"></path></svg><span>只说一句</span></button>
+          <button id="cancel-button" class="cancel-button" type="button" disabled>停止</button>
+        </div>
+        <details class="keyboard-mode" id="keyboard-mode"><summary>用文字输入 <span>可选</span></summary><form id="message-form" class="composer">
+          <label class="sr-only" for="message">告诉芽芽你想做什么</label>
+          <textarea id="message" name="message" rows="1" maxlength="1000" placeholder="告诉芽芽，你想做什么？" enterkeyhint="send" autocomplete="off"></textarea>
+          <button id="send-button" class="send-button" type="submit" aria-label="发送消息"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"></path></svg></button>
+        </form></details>
+        <div class="composer-footer"><p id="voice-privacy">本页默认不收音；对话开启后分句收音，回应时暂停。声音仅本次处理，不建录音库。</p></div>
+      </section>
+
+      <details id="quiz-panel" class="quiz-panel"><summary>也可以一起做个小挑战 <span>可选</span></summary><section class="task-section" aria-labelledby="task-heading"><div class="section-heading"><h2 id="task-heading">选一道小题，试试一起思考。</h2><button id="task-clear" class="text-button" type="button" hidden>结束这道题</button></div><div id="task-list" class="task-list" aria-label="选择一个小挑战"><p class="loading-note">正在读取小挑战…</p></div><div id="selected-task" class="selected-task" hidden><span class="task-label">选中的小挑战</span><h3 id="selected-title"></h3><p id="selected-prompt"></p></div></section></details>
+
+      <footer class="panel-footer">
+        <label class="offer-setting" for="offers-toggle"><input id="offers-toggle" type="checkbox" role="switch" disabled><span class="switch-track" aria-hidden="true"></span><span>允许芽芽主动提一点建议</span></label>
+        <details id="understanding" class="understanding"><summary>芽芽这次理解了什么？</summary><dl><div><dt>想做的事</dt><dd id="decision-intent">还没有本次理解结果</dd></div><div><dt>关联的对象</dt><dd id="decision-target">尚未确定</dd></div><div><dt>判断依据</dt><dd id="decision-reason">等待你发起互动</dd></div><div><dt>能力协作</dt><dd id="model-activity">尚无本轮调用记录</dd></div></dl></details>
+      </footer>
+    </section>
+  </div>
+  <p class="privacy-note">不自动开启摄像头；声音与触摸身份不自动关联人物。页面离开后不再续听，已开始的一句会显示停止处理状态，确认退出后才显示关闭。</p>
+  <noscript><p class="noscript">需要启用 JavaScript 才能使用互动；摄像头和麦克风不会自动开启。</p></noscript>
+</main>
+<script src="/continuous-voice.js"></script>
+<script src="/interaction.js"></script>
+<script src="/context-camera.js"></script>
+</body>
+</html>

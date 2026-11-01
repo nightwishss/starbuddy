@@ -1,0 +1,12 @@
+[Unit]
+Description=Recover VENTUNO Q USB-C UCSI initialization
+After=systemd-modules-load.service
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/sleep 3
+ExecStart=/usr/local/sbin/vq-typec-recover
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
